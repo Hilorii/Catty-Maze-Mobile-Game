@@ -1,15 +1,15 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApp.Pages.LabyrinthGamePage">
-    <Grid RowDefinitions="*,Auto" Padding="10">
+    <Grid Padding="10"
+          HorizontalOptions="Center"
+          VerticalOptions="Center">
         <GraphicsView x:Name="GameCanvas"
-                      Grid.Row="0"
                       Drawable="{Binding Drawable}"
                       HeightRequest="500"
                       WidthRequest="500" />
 
-        <!-- Panel sterowania -->
-        <StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="10">
+        <StackLayout Orientation="Horizontal" VerticalOptions="End" Spacing="10">
             <Button Text="↑" Clicked="OnMoveUp" />
             <Button Text="↓" Clicked="OnMoveDown" />
             <Button Text="←" Clicked="OnMoveLeft" />
