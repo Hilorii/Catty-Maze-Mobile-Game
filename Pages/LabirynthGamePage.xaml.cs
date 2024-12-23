@@ -5,7 +5,6 @@ namespace MobileApp.Pages;
 public partial class LabyrinthGamePage : ContentPage
 {
     private LabyrinthDrawable _drawable;
-    private int _remainingMoves = 10; // Liczba ruchów na poziom
 
     public LabyrinthGamePage()
     {
@@ -13,6 +12,10 @@ public partial class LabyrinthGamePage : ContentPage
 
         _drawable = new LabyrinthDrawable();
         GameCanvas.Drawable = _drawable;
+
+        // £adowanie pierwszego poziomu i aktualizacja etykiety ruchów
+        _drawable.LoadLevel();
+        UpdateMovesRemaining();
     }
 
     private void OnMoveUp(object sender, EventArgs e) => MovePlayer(0, -1);
@@ -22,27 +25,32 @@ public partial class LabyrinthGamePage : ContentPage
 
     private void MovePlayer(int deltaX, int deltaY)
     {
-        if (_remainingMoves > 0)
+        if (_drawable.MovesRemaining > 0)
         {
             bool success = _drawable.MovePlayer(deltaX, deltaY);
             if (success)
             {
-                _remainingMoves--;
                 GameCanvas.Invalidate();
+                UpdateMovesRemaining();
 
                 if (_drawable.IsGoalReached)
                 {
                     DisplayAlert("Gratulacje!", "Ukoñczy³eœ poziom!", "OK");
                     _drawable.LoadNextLevel();
-                    _remainingMoves = 10; // Reset ruchów na nowy poziom
+                    UpdateMovesRemaining();
                 }
-                else if (_remainingMoves == 0)
+                else if (_drawable.MovesRemaining == 0)
                 {
                     DisplayAlert("Koniec gry", "Przegra³eœ! Spróbuj jeszcze raz.", "OK");
                     _drawable.ResetLevel();
-                    _remainingMoves = 10; // Reset poziomu
+                    UpdateMovesRemaining();
                 }
             }
         }
+    }
+
+    private void UpdateMovesRemaining()
+    {
+        MovesRemainingLabel.Text = $"Pozosta³e ruchy: {_drawable.MovesRemaining}";
     }
 }

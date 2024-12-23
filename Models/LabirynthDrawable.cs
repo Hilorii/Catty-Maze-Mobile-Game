@@ -1,18 +1,16 @@
 ﻿using System;
 using Microsoft.Maui.Graphics;
-using MobileApp.Models;
-
 
 namespace MobileApp.Models
 {
     public class LabyrinthDrawable : IDrawable
     {
-        private int[,] _map; // Aktualny układ labiryntu
+        private int[,] _map; // Układ labiryntu
         private int _playerX, _playerY; // Pozycja gracza
-        private int _currentLevelIndex; // Aktualny poziom
+        private int _currentLevelIndex; // Poziom gry
 
         public bool IsGoalReached { get; private set; }
-        public int MovesRemaining { get; private set; } // Liczba pozostałych ruchów
+        public int MovesRemaining { get; private set; }
 
         public LabyrinthDrawable()
         {
@@ -22,11 +20,10 @@ namespace MobileApp.Models
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            float cellSize = CalculateCellSize(dirtyRect); // Dynamiczny rozmiar komórki
+            float cellSize = CalculateCellSize(dirtyRect);
             float offsetX = (dirtyRect.Width - (_map.GetLength(1) * cellSize)) / 2;
             float offsetY = (dirtyRect.Height - (_map.GetLength(0) * cellSize)) / 2;
 
-            // Rysowanie labiryntu
             for (int y = 0; y < _map.GetLength(0); y++)
             {
                 for (int x = 0; x < _map.GetLength(1); x++)
@@ -59,7 +56,6 @@ namespace MobileApp.Models
         {
             int newX = _playerX, newY = _playerY;
 
-            // Poruszanie gracza do napotkania przeszkody
             while (true)
             {
                 int nextX = newX + deltaX;
@@ -80,7 +76,6 @@ namespace MobileApp.Models
             _playerY = newY;
             MovesRemaining--;
 
-            // Sprawdzenie, czy osiągnięto cel
             if (_map[_playerY, _playerX] == 3)
             {
                 IsGoalReached = true;
@@ -93,14 +88,13 @@ namespace MobileApp.Models
         {
             if (_currentLevelIndex >= LevelData.AllLevels.Count)
             {
-                _currentLevelIndex = 0; // Restart do pierwszego poziomu
+                _currentLevelIndex = 0;
             }
 
             var level = LevelData.AllLevels[_currentLevelIndex];
             _map = level.Map;
             MovesRemaining = level.Moves;
 
-            // Znajdź pozycję startową gracza
             for (int y = 0; y < _map.GetLength(0); y++)
             {
                 for (int x = 0; x < _map.GetLength(1); x++)
@@ -129,10 +123,10 @@ namespace MobileApp.Models
 
         private float CalculateCellSize(RectF dirtyRect)
         {
-            // Obliczanie dynamicznego rozmiaru komórki na podstawie dostępnej przestrzeni
             float cellWidth = dirtyRect.Width / _map.GetLength(1);
             float cellHeight = dirtyRect.Height / _map.GetLength(0);
             return Math.Min(cellWidth, cellHeight);
         }
     }
+
 }

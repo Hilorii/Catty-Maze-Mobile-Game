@@ -4,12 +4,29 @@
     <Grid Padding="10"
           HorizontalOptions="Center"
           VerticalOptions="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Wyświetlanie liczby ruchów -->
+        <Label x:Name="MovesRemainingLabel"
+               Text="Pozostałe ruchy: 0"
+               FontSize="18"
+               HorizontalOptions="Center"
+               VerticalOptions="Start"
+               Grid.Row="0" />
+
+        <!-- Graficzne przedstawienie labiryntu -->
         <GraphicsView x:Name="GameCanvas"
                       Drawable="{Binding Drawable}"
                       HeightRequest="500"
-                      WidthRequest="500" />
+                      WidthRequest="500"
+                      Grid.Row="1" />
 
-        <StackLayout Orientation="Horizontal" VerticalOptions="End" Spacing="10">
+        <!-- Przyciski sterujące -->
+        <StackLayout Orientation="Horizontal" VerticalOptions="End" Spacing="10" Grid.Row="2">
             <Button Text="↑" Clicked="OnMoveUp" />
             <Button Text="↓" Clicked="OnMoveDown" />
             <Button Text="←" Clicked="OnMoveLeft" />
