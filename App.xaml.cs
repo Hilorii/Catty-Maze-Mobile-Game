@@ -4,9 +4,9 @@
     {
         public App()
         {
-            InitializeComponent();
-
-            MainPage = new AppShell();
+            InitializeComponent(); // Możesz to usunąć, jeśli całkowicie rezygnujesz z XAML
+            MainPage = new MainPage(); // Ustaw główną stronę aplikacji
         }
     }
+
 }
