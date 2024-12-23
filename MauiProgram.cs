@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using MobileApp.Pages;
 
 namespace MobileApp
 {
@@ -15,9 +16,8 @@ namespace MobileApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-#endif
+            // Rejestracja strony z grą jako domyślnej
+            builder.Services.AddTransient<LabyrinthGamePage>();
 
             return builder.Build();
         }
