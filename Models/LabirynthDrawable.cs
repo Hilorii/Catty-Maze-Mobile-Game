@@ -5,11 +5,12 @@ namespace MobileApp.Models
 {
     public class LabyrinthDrawable : IDrawable
     {
-        private int[,] _map; // Układ labiryntu
-        private int _playerX, _playerY; // Pozycja gracza
-        private int _currentLevelIndex; // Poziom gry
+        private int[,] _map;
+        private int _playerX, _playerY;
+        private int _currentLevelIndex;
+        private int _coinsRemaining;
 
-        public bool IsGoalReached { get; private set; }
+        public int CoinsRemaining => _coinsRemaining; // Dodana właściwość
         public int MovesRemaining { get; private set; }
 
         public LabyrinthDrawable()
@@ -37,9 +38,9 @@ namespace MobileApp.Models
                             canvas.FillColor = Colors.Black;
                             canvas.FillRectangle(left, top, cellSize, cellSize);
                             break;
-                        case 3: // Cel
-                            canvas.FillColor = Colors.Green;
-                            canvas.FillRectangle(left, top, cellSize, cellSize);
+                        case 3: // Moneta
+                            canvas.FillColor = Colors.Gold;
+                            canvas.FillEllipse(left, top, cellSize, cellSize);
                             break;
                     }
                 }
@@ -61,25 +62,29 @@ namespace MobileApp.Models
                 int nextX = newX + deltaX;
                 int nextY = newY + deltaY;
 
+                // Sprawdzenie, czy gracz nie wychodzi poza mapę lub nie napotyka przeszkody
                 if (nextX < 0 || nextX >= _map.GetLength(1) ||
                     nextY < 0 || nextY >= _map.GetLength(0) ||
                     _map[nextY, nextX] == 1) break;
 
                 newX = nextX;
                 newY = nextY;
+
+                // Jeśli gracz przechodzi przez monetę, zbiera ją
+                if (_map[newY, newX] == 3)
+                {
+                    _map[newY, newX] = 0; // Usuń monetę z mapy
+                    _coinsRemaining--;
+                }
             }
 
+            // Sprawdzenie, czy gracz faktycznie się poruszył
             if (newX == _playerX && newY == _playerY)
-                return false; // Gracz nie zmienił pozycji
+                return false;
 
             _playerX = newX;
             _playerY = newY;
             MovesRemaining--;
-
-            if (_map[_playerY, _playerX] == 3)
-            {
-                IsGoalReached = true;
-            }
 
             return true;
         }
@@ -94,17 +99,20 @@ namespace MobileApp.Models
             var level = LevelData.AllLevels[_currentLevelIndex];
             _map = level.Map;
             MovesRemaining = level.Moves;
+            _coinsRemaining = 0;
 
             for (int y = 0; y < _map.GetLength(0); y++)
             {
                 for (int x = 0; x < _map.GetLength(1); x++)
                 {
-                    if (_map[y, x] == 2)
+                    if (_map[y, x] == 2) // Gracz
                     {
                         _playerX = x;
                         _playerY = y;
-                        IsGoalReached = false;
-                        return;
+                    }
+                    else if (_map[y, x] == 3) // Moneta
+                    {
+                        _coinsRemaining++;
                     }
                 }
             }
@@ -128,5 +136,4 @@ namespace MobileApp.Models
             return Math.Min(cellWidth, cellHeight);
         }
     }
-
 }

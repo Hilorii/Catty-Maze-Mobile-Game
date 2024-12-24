@@ -16,6 +16,7 @@ public partial class LabyrinthGamePage : ContentPage
         // £adowanie pierwszego poziomu i aktualizacja etykiety ruchów
         _drawable.LoadLevel();
         UpdateMovesRemaining();
+        UpdateCoinsRemaining();
     }
 
     private void OnMoveUp(object sender, EventArgs e) => MovePlayer(0, -1);
@@ -32,18 +33,21 @@ public partial class LabyrinthGamePage : ContentPage
             {
                 GameCanvas.Invalidate();
                 UpdateMovesRemaining();
+                UpdateCoinsRemaining();
 
-                if (_drawable.IsGoalReached)
+                if (_drawable.CoinsRemaining == 0)
                 {
                     DisplayAlert("Gratulacje!", "Ukoñczy³eœ poziom!", "OK");
                     _drawable.LoadNextLevel();
                     UpdateMovesRemaining();
+                    UpdateCoinsRemaining();
                 }
                 else if (_drawable.MovesRemaining == 0)
                 {
                     DisplayAlert("Koniec gry", "Przegra³eœ! Spróbuj jeszcze raz.", "OK");
                     _drawable.ResetLevel();
                     UpdateMovesRemaining();
+                    UpdateCoinsRemaining();
                 }
             }
         }
@@ -52,5 +56,10 @@ public partial class LabyrinthGamePage : ContentPage
     private void UpdateMovesRemaining()
     {
         MovesRemainingLabel.Text = $"Pozosta³e ruchy: {_drawable.MovesRemaining}";
+    }
+
+    private void UpdateCoinsRemaining()
+    {
+        MovesRemainingLabel.Text += $"\nPozosta³e monety: {_drawable.CoinsRemaining}";
     }
 }
