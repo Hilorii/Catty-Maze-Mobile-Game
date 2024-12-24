@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Maui.Graphics;
 
 namespace MobileApp.Models
@@ -123,11 +124,12 @@ namespace MobileApp.Models
             _currentLevelIndex++;
             if (_currentLevelIndex >= LevelData.AllLevels.Count)
             {
-                _currentLevelIndex = 0; // Opcjonalnie wraca na pierwszy poziom
-                // Możesz dodać komunikat lub przejście do ekranu końcowego
+                _currentLevelIndex = 0; // Wraca na pierwszy poziom
             }
-            LoadLevel();
+            Debug.WriteLine($"LabyrinthDrawable: Ładowanie poziomu {_currentLevelIndex}");
+            LoadLevel(_currentLevelIndex);
         }
+
 
         public void ResetLevel()
         {
