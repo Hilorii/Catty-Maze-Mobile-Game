@@ -8,8 +8,7 @@ namespace MobileApp
         {
             InitializeComponent();
 
-            // Ustawiamy stronę z grą jako startową
-            MainPage = new LabyrinthGamePage();
+            MainPage = new NavigationPage(new MainMenuPage());
         }
     }
 }

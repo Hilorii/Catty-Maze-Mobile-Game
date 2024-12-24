@@ -10,8 +10,9 @@ namespace MobileApp.Models
         private int _currentLevelIndex;
         private int _coinsRemaining;
 
-        public int CoinsRemaining => _coinsRemaining; // Dodana właściwość
+        public int CoinsRemaining => _coinsRemaining;
         public int MovesRemaining { get; private set; }
+        public int CurrentLevelIndex => _currentLevelIndex; // Dodana właściwość
 
         public LabyrinthDrawable()
         {
@@ -62,7 +63,6 @@ namespace MobileApp.Models
                 int nextX = newX + deltaX;
                 int nextY = newY + deltaY;
 
-                // Sprawdzenie, czy gracz nie wychodzi poza mapę lub nie napotyka przeszkody
                 if (nextX < 0 || nextX >= _map.GetLength(1) ||
                     nextY < 0 || nextY >= _map.GetLength(0) ||
                     _map[nextY, nextX] == 1) break;
@@ -70,15 +70,13 @@ namespace MobileApp.Models
                 newX = nextX;
                 newY = nextY;
 
-                // Jeśli gracz przechodzi przez monetę, zbiera ją
                 if (_map[newY, newX] == 3)
                 {
-                    _map[newY, newX] = 0; // Usuń monetę z mapy
+                    _map[newY, newX] = 0;
                     _coinsRemaining--;
                 }
             }
 
-            // Sprawdzenie, czy gracz faktycznie się poruszył
             if (newX == _playerX && newY == _playerY)
                 return false;
 
@@ -91,13 +89,15 @@ namespace MobileApp.Models
 
         public void LoadLevel()
         {
-            if (_currentLevelIndex >= LevelData.AllLevels.Count)
-            {
-                _currentLevelIndex = 0;
-            }
+            LoadLevel(_currentLevelIndex);
+        }
+
+        public void LoadLevel(int levelIndex)
+        {
+            _currentLevelIndex = levelIndex;
 
             var level = LevelData.AllLevels[_currentLevelIndex];
-            _map = level.Map;
+            _map = (int[,])level.Map.Clone();
             MovesRemaining = level.Moves;
             _coinsRemaining = 0;
 
@@ -105,12 +105,12 @@ namespace MobileApp.Models
             {
                 for (int x = 0; x < _map.GetLength(1); x++)
                 {
-                    if (_map[y, x] == 2) // Gracz
+                    if (_map[y, x] == 2)
                     {
                         _playerX = x;
                         _playerY = y;
                     }
-                    else if (_map[y, x] == 3) // Moneta
+                    else if (_map[y, x] == 3)
                     {
                         _coinsRemaining++;
                     }
@@ -121,6 +121,11 @@ namespace MobileApp.Models
         public void LoadNextLevel()
         {
             _currentLevelIndex++;
+            if (_currentLevelIndex >= LevelData.AllLevels.Count)
+            {
+                _currentLevelIndex = 0; // Opcjonalnie wraca na pierwszy poziom
+                // Możesz dodać komunikat lub przejście do ekranu końcowego
+            }
             LoadLevel();
         }
 

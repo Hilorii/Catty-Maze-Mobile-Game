@@ -1,14 +1,21 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApp.Pages.LevelSelectionPage">
-    <CollectionView ItemsSource="{Binding Levels}" SelectionMode="Single">
+    <CollectionView ItemsSource="{Binding Levels}"
+                    SelectionMode="Single"
+                    SelectionChanged="OnLevelSelected">
         <CollectionView.ItemTemplate>
             <DataTemplate>
                 <StackLayout Orientation="Horizontal" Padding="10">
-                    <Label Text="{Binding Index}" />
-                    <Label Text="Poziom" />
+                    <Label Text="{Binding}" 
+                           FontSize="18" 
+                           TextColor="{Binding Converter={StaticResource LevelColorConverter}}" />
+                    <Label Text="Poziom" 
+                           FontSize="18" 
+                           TextColor="{Binding Converter={StaticResource LevelColorConverter}}" />
                 </StackLayout>
             </DataTemplate>
         </CollectionView.ItemTemplate>
     </CollectionView>
+
 </ContentPage>
