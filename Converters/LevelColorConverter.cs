@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using Microsoft.Maui.Controls;
 using MobileApp.Models;
@@ -9,26 +10,25 @@ namespace MobileApp.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            // Sprawdzenie, czy `value` nie jest null
             if (value == null)
             {
+                Debug.WriteLine("LevelColorConverter: Otrzymano wartość null");
                 return Colors.Black; // Domyślny kolor, jeśli wartość jest null
             }
 
             if (value is not int levelIndex || levelIndex <= 0)
             {
-                return Colors.Black; // Domyślny kolor, jeśli wartość jest nieprawidłowa
+                Debug.WriteLine($"LevelColorConverter: Nieprawidłowa wartość indeksu poziomu: {value}");
+                return Colors.Black; // Domyślny kolor dla nieprawidłowej wartości
             }
 
-            levelIndex -= 1; // Konwertuj na indeks (zakładamy, że poziomy zaczynają się od 1)
+            levelIndex -= 1; // Dostosowanie poziomu do indeksu zero-based
 
-            // Sprawdzenie, czy GameState jest poprawnie skonfigurowany
-            if (GameState.IsLevelCompleted(levelIndex))
-            {
-                return Colors.Gray;
-            }
+            // Sprawdzenie, czy poziom został ukończony
+            bool isCompleted = GameState.IsLevelCompleted(levelIndex);
+            Debug.WriteLine($"LevelColorConverter: Poziom {levelIndex} ukończony: {isCompleted}");
 
-            return Colors.Black;
+            return isCompleted ? Colors.Gray : Colors.Black;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

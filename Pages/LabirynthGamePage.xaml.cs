@@ -70,6 +70,9 @@ namespace MobileApp.Pages
         {
             try
             {
+                // Oznacz bie¿¹cy poziom jako ukoñczony
+                GameState.MarkLevelAsCompleted(_drawable.CurrentLevelIndex);
+
                 Debug.WriteLine("LabyrinthGamePage: Wyœwietlanie strony ukoñczenia poziomu...");
                 Navigation.PushModalAsync(new LevelCompletePage(
                     onNextLevel: async () =>
@@ -96,6 +99,7 @@ namespace MobileApp.Pages
                 Debug.WriteLine($"LabyrinthGamePage: B³¹d podczas otwierania strony: {ex.Message}");
             }
         }
+
 
 
         private void UpdateMovesRemaining()

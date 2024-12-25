@@ -5,31 +5,27 @@ namespace MobileApp.Pages
 {
     public partial class LevelCompletePage : ContentPage
     {
-        private Action _onNextLevel;
-        private Action _onExitToMenu;
+        private readonly Action _onNextLevel;
+        private readonly Action _onExitToMenu;
 
         public LevelCompletePage(Action onNextLevel, Action onExitToMenu)
         {
             InitializeComponent();
 
-            if (onNextLevel == null || onExitToMenu == null)
-            {
-                throw new ArgumentNullException("Przekazane akcje nie mog¹ byæ null");
-            }
-
-            _onNextLevel = onNextLevel;
-            _onExitToMenu = onExitToMenu;
+            // Walidacja przekazanych akcji
+            _onNextLevel = onNextLevel ?? throw new ArgumentNullException(nameof(onNextLevel), "Akcja przejœcia do nastêpnego poziomu nie mo¿e byæ null.");
+            _onExitToMenu = onExitToMenu ?? throw new ArgumentNullException(nameof(onExitToMenu), "Akcja powrotu do menu nie mo¿e byæ null.");
         }
 
         private void OnNextLevelClicked(object sender, EventArgs e)
         {
-            Debug.WriteLine("Przycisk 'PrzejdŸ do nastêpnego poziomu' klikniêty");
+            Debug.WriteLine("LevelCompletePage: Przycisk 'PrzejdŸ do nastêpnego poziomu' klikniêty");
             _onNextLevel?.Invoke();
         }
 
         private void OnExitToMenuClicked(object sender, EventArgs e)
         {
-            Debug.WriteLine("Przycisk 'WyjdŸ do menu' klikniêty");
+            Debug.WriteLine("LevelCompletePage: Przycisk 'WyjdŸ do menu' klikniêty");
             _onExitToMenu?.Invoke();
         }
     }
