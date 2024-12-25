@@ -4,6 +4,7 @@ using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Storage;
 
 
+
 namespace MobileApp.Models
 {
     public class LabyrinthDrawable : IDrawable
@@ -62,56 +63,42 @@ namespace MobileApp.Models
             }
         }
 
-        private Microsoft.Maui.Graphics.IImage? _cachedPlayerImage;
-
-        private Microsoft.Maui.Graphics.IImage LoadPlayerImage()
+        private Microsoft.Maui.Graphics.IImage? LoadPlayerImage()
         {
-            if (_cachedPlayerImage != null)
-            {
-                Debug.WriteLine("Obraz gracza jest już załadowany z pamięci podręcznej.");
-                return _cachedPlayerImage;
-            }
-
             try
             {
-                var stream = FileSystem.OpenAppPackageFileAsync("player.png").GetAwaiter().GetResult();
+                // Poprawne użycie FileSystem dla plików zasobów
+                using var stream = FileSystem.OpenAppPackageFileAsync("playerr.png").GetAwaiter().GetResult();
 
-                if (stream == null)
+                if (stream != null)
                 {
-                    Debug.WriteLine("Błąd: Nie można otworzyć strumienia dla obrazu gracza.");
-                    return null;
-                }
+                    Debug.WriteLine("Obraz gracza został poprawnie załadowany.");
 
-                _cachedPlayerImage = Microsoft.Maui.Graphics.Platform.PlatformImage.FromStream(stream);
+                    // Użycie PlatformImage do utworzenia obiektu IImage
+                    var platformImage = Microsoft.Maui.Graphics.Platform.PlatformImage.FromStream(stream);
 
-                if (_cachedPlayerImage == null)
-                {
-                    Debug.WriteLine("Błąd: Obraz gracza nie został poprawnie załadowany.");
+                    if (platformImage != null)
+                    {
+                        Debug.WriteLine("PlatformImage poprawnie załadowany.");
+                        return platformImage;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Błąd: Nie udało się utworzyć PlatformImage.");
+                    }
                 }
                 else
                 {
-                    Debug.WriteLine("Obraz gracza został poprawnie załadowany.");
+                    Debug.WriteLine("Błąd: Strumień obrazu jest null.");
                 }
-
-                return _cachedPlayerImage;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Błąd ładowania obrazu gracza: {ex.Message}");
-                return null;
             }
+
+            return null;
         }
-
-
-
-
-
-
-
-
-
-
-
 
         public bool MovePlayer(int deltaX, int deltaY)
         {
