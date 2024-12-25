@@ -6,6 +6,10 @@ namespace MobileApp.Models
     {
         public static List<Level> AllLevels { get; } = new List<Level>
         {
+
+            // 1 = ściana
+            // 2 = gracz
+            // 3 moneta
             new Level
             {
                 Map = new int[,]
