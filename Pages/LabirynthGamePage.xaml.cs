@@ -32,11 +32,6 @@ namespace MobileApp.Pages
             UpdateCoinsRemaining();
         }
 
-        private void OnMoveUp(object sender, EventArgs e) => MovePlayer(0, -1);
-        private void OnMoveDown(object sender, EventArgs e) => MovePlayer(0, 1);
-        private void OnMoveLeft(object sender, EventArgs e) => MovePlayer(-1, 0);
-        private void OnMoveRight(object sender, EventArgs e) => MovePlayer(1, 0);
-
         private void MovePlayer(int deltaX, int deltaY)
         {
             if (_drawable.MovesRemaining > 0)
@@ -56,11 +51,8 @@ namespace MobileApp.Pages
                     }
                     else if (_drawable.MovesRemaining == 0) // Koniec ruchów
                     {
-                        DisplayAlert("Koniec gry", "Przegra³eœ! Spróbuj jeszcze raz.", "OK");
-                        Debug.WriteLine("LabyrinthGamePage: Koniec ruchów, resetowanie poziomu");
-                        _drawable.ResetLevel();
-                        UpdateMovesRemaining();
-                        UpdateCoinsRemaining();
+                        Debug.WriteLine("LabyrinthGamePage: Koniec ruchów, wyœwietlanie strony przegranej");
+                        ShowLevelFailedPage(); // Wywo³anie nowej strony po przegranej
                     }
                 }
             }
@@ -70,7 +62,6 @@ namespace MobileApp.Pages
         {
             try
             {
-                // Oznacz bie¿¹cy poziom jako ukoñczony
                 GameState.MarkLevelAsCompleted(_drawable.CurrentLevelIndex);
 
                 Debug.WriteLine("LabyrinthGamePage: Wyœwietlanie strony ukoñczenia poziomu...");
@@ -80,10 +71,10 @@ namespace MobileApp.Pages
                         Debug.WriteLine("LevelCompletePage: Przechodzenie do nastêpnego poziomu...");
                         _drawable.LoadNextLevel();
                         Debug.WriteLine("LabyrinthDrawable: Nastêpny poziom za³adowany.");
-                        GameCanvas.Invalidate(); // Odœwie¿ widok labiryntu
+                        GameCanvas.Invalidate();
                         UpdateMovesRemaining();
                         UpdateCoinsRemaining();
-                        await Navigation.PopModalAsync(); // Zamknij modalny ekran
+                        await Navigation.PopModalAsync();
                     },
 
                     onExitToMenu: async () =>
@@ -100,7 +91,58 @@ namespace MobileApp.Pages
             }
         }
 
+        private void ShowLevelFailedPage()
+        {
+            try
+            {
+                Debug.WriteLine("LabyrinthGamePage: Wyœwietlanie strony przegranej...");
+                Navigation.PushModalAsync(new LevelFailedPage(
+                    onRetryLevel: () =>
+                    {
+                        Debug.WriteLine("LevelFailedPage: Powtórzenie poziomu...");
+                        _drawable.ResetLevel();
+                        GameCanvas.Invalidate();
+                        UpdateMovesRemaining();
+                        UpdateCoinsRemaining();
+                        Navigation.PopModalAsync();
+                    },
 
+                    onExitToMenu: () =>
+                    {
+                        Debug.WriteLine("LevelFailedPage: Powrót do menu g³ównego...");
+                        Application.Current.MainPage = new NavigationPage(new MainMenuPage());
+                    }
+                ));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"LabyrinthGamePage: B³¹d podczas otwierania strony przegranej: {ex.Message}");
+            }
+        }
+
+        private void OnSwipedLeft(object sender, SwipedEventArgs e)
+        {
+            Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w lewo");
+            MovePlayer(-1, 0);
+        }
+
+        private void OnSwipedRight(object sender, SwipedEventArgs e)
+        {
+            Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w prawo");
+            MovePlayer(1, 0);
+        }
+
+        private void OnSwipedUp(object sender, SwipedEventArgs e)
+        {
+            Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w górê");
+            MovePlayer(0, -1);
+        }
+
+        private void OnSwipedDown(object sender, SwipedEventArgs e)
+        {
+            Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w dó³");
+            MovePlayer(0, 1);
+        }
 
         private void UpdateMovesRemaining()
         {

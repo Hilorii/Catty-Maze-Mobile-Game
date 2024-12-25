@@ -23,14 +23,13 @@
                       Drawable="{Binding Drawable}"
                       HeightRequest="500"
                       WidthRequest="500"
-                      Grid.Row="1" />
-
-        <!-- Przyciski sterujące -->
-        <StackLayout Orientation="Horizontal" VerticalOptions="End" Spacing="10" Grid.Row="2">
-            <Button Text="↑" Clicked="OnMoveUp" />
-            <Button Text="↓" Clicked="OnMoveDown" />
-            <Button Text="←" Clicked="OnMoveLeft" />
-            <Button Text="→" Clicked="OnMoveRight" />
-        </StackLayout>
+                      Grid.Row="1">
+            <GraphicsView.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipedLeft" />
+                <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight" />
+                <SwipeGestureRecognizer Direction="Up" Swiped="OnSwipedUp" />
+                <SwipeGestureRecognizer Direction="Down" Swiped="OnSwipedDown" />
+            </GraphicsView.GestureRecognizers>
+        </GraphicsView>
     </Grid>
 </ContentPage>
