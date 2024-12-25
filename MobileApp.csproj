@@ -62,6 +62,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\playerr.png" />
+	  <None Remove="Resources\Raw\Coin.png" />
 	</ItemGroup>
 
 	<ItemGroup>

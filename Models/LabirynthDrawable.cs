@@ -3,8 +3,6 @@ using System.Diagnostics;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Storage;
 
-
-
 namespace MobileApp.Models
 {
     public class LabyrinthDrawable : IDrawable
@@ -14,14 +12,17 @@ namespace MobileApp.Models
         private int _currentLevelIndex;
         private int _coinsRemaining;
 
+        private Microsoft.Maui.Graphics.IImage? _coinImage;
+
         public int CoinsRemaining => _coinsRemaining;
         public int MovesRemaining { get; private set; }
-        public int CurrentLevelIndex => _currentLevelIndex; // Dodana właściwość
+        public int CurrentLevelIndex => _currentLevelIndex;
 
         public LabyrinthDrawable()
         {
             _currentLevelIndex = 0;
             LoadLevel();
+            LoadCoinImage();
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -44,8 +45,11 @@ namespace MobileApp.Models
                             canvas.FillRectangle(left, top, cellSize, cellSize);
                             break;
                         case 3: // Moneta
-                            canvas.FillColor = Colors.Gold;
-                            canvas.FillEllipse(left, top, cellSize, cellSize);
+                            Microsoft.Maui.Graphics.IImage _coinImage = LoadCoinImage();
+                            if (_coinImage != null)
+                            {
+                                canvas.DrawImage(_coinImage, left, top, cellSize, cellSize);
+                            }
                             break;
                     }
                 }
@@ -55,7 +59,6 @@ namespace MobileApp.Models
             float playerLeft = offsetX + (_playerX * cellSize);
             float playerTop = offsetY + (_playerY * cellSize);
 
-            // Ładowanie obrazu gracza
             Microsoft.Maui.Graphics.IImage playerImage = LoadPlayerImage();
             if (playerImage != null)
             {
@@ -63,33 +66,33 @@ namespace MobileApp.Models
             }
         }
 
+
+        private Microsoft.Maui.Graphics.IImage? LoadCoinImage()
+        {
+            try
+            {
+                using var stream = FileSystem.OpenAppPackageFileAsync("Coin.png").GetAwaiter().GetResult();
+                if (stream != null)
+                {
+                    return Microsoft.Maui.Graphics.Platform.PlatformImage.FromStream(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd ładowania obrazu monety: {ex.Message}");
+            }
+
+            return null;
+        }
+
         private Microsoft.Maui.Graphics.IImage? LoadPlayerImage()
         {
             try
             {
-                // Poprawne użycie FileSystem dla plików zasobów
                 using var stream = FileSystem.OpenAppPackageFileAsync("playerr.png").GetAwaiter().GetResult();
-
                 if (stream != null)
                 {
-                    Debug.WriteLine("Obraz gracza został poprawnie załadowany.");
-
-                    // Użycie PlatformImage do utworzenia obiektu IImage
-                    var platformImage = Microsoft.Maui.Graphics.Platform.PlatformImage.FromStream(stream);
-
-                    if (platformImage != null)
-                    {
-                        Debug.WriteLine("PlatformImage poprawnie załadowany.");
-                        return platformImage;
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Błąd: Nie udało się utworzyć PlatformImage.");
-                    }
-                }
-                else
-                {
-                    Debug.WriteLine("Błąd: Strumień obrazu jest null.");
+                    return Microsoft.Maui.Graphics.Platform.PlatformImage.FromStream(stream);
                 }
             }
             catch (Exception ex)
@@ -174,7 +177,6 @@ namespace MobileApp.Models
             Debug.WriteLine($"LabyrinthDrawable: Ładowanie poziomu {_currentLevelIndex}");
             LoadLevel(_currentLevelIndex);
         }
-
 
         public void ResetLevel()
         {
