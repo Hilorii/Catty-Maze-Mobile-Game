@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Storage;
+
 
 namespace MobileApp.Models
 {
@@ -48,12 +50,68 @@ namespace MobileApp.Models
                 }
             }
 
-            // Rysowanie gracza
-            canvas.FillColor = Colors.Blue;
+            // Rysowanie gracza jako obraz
             float playerLeft = offsetX + (_playerX * cellSize);
             float playerTop = offsetY + (_playerY * cellSize);
-            canvas.FillRectangle(playerLeft, playerTop, cellSize, cellSize);
+
+            // Ładowanie obrazu gracza
+            Microsoft.Maui.Graphics.IImage playerImage = LoadPlayerImage();
+            if (playerImage != null)
+            {
+                canvas.DrawImage(playerImage, playerLeft, playerTop, cellSize, cellSize);
+            }
         }
+
+        private Microsoft.Maui.Graphics.IImage? _cachedPlayerImage;
+
+        private Microsoft.Maui.Graphics.IImage LoadPlayerImage()
+        {
+            if (_cachedPlayerImage != null)
+            {
+                Debug.WriteLine("Obraz gracza jest już załadowany z pamięci podręcznej.");
+                return _cachedPlayerImage;
+            }
+
+            try
+            {
+                var stream = FileSystem.OpenAppPackageFileAsync("player.png").GetAwaiter().GetResult();
+
+                if (stream == null)
+                {
+                    Debug.WriteLine("Błąd: Nie można otworzyć strumienia dla obrazu gracza.");
+                    return null;
+                }
+
+                _cachedPlayerImage = Microsoft.Maui.Graphics.Platform.PlatformImage.FromStream(stream);
+
+                if (_cachedPlayerImage == null)
+                {
+                    Debug.WriteLine("Błąd: Obraz gracza nie został poprawnie załadowany.");
+                }
+                else
+                {
+                    Debug.WriteLine("Obraz gracza został poprawnie załadowany.");
+                }
+
+                return _cachedPlayerImage;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Błąd ładowania obrazu gracza: {ex.Message}");
+                return null;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
 
         public bool MovePlayer(int deltaX, int deltaY)
         {
