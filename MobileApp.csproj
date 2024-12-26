@@ -63,10 +63,9 @@
 	<ItemGroup>
 	  <None Remove="Resources\Images\playerr.png" />
 	  <None Remove="Resources\Raw\Coin.png" />
-	  <None Remove="Resources\Raw\GameBackground1.png" />
 	  <None Remove="Resources\Raw\LabirynthBackground1.png" />
+	  <None Remove="Resources\Raw\LBG.png" />
 	  <None Remove="Resources\Raw\Wall1.png" />
-	  <None Remove="Resources\Raw\yay.png" />
 	</ItemGroup>
 
 	<ItemGroup>

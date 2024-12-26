@@ -36,7 +36,7 @@ namespace MobileApp.Models
             float offsetY = (dirtyRect.Height - (_map.GetLength(0) * cellSize)) / 2;
 
             // Rysowanie tła na całym ekranie
-            Microsoft.Maui.Graphics.IImage backgroundImage = LoadImage("GameBackground1.png");
+            Microsoft.Maui.Graphics.IImage backgroundImage = LoadImage("LBG.png");
             if (backgroundImage != null)
             {
                 canvas.DrawImage(backgroundImage, 0, 0, dirtyRect.Width, dirtyRect.Height);
