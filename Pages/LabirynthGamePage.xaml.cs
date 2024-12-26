@@ -67,7 +67,7 @@ namespace MobileApp.Pages
 
         private async Task AnimatePlayerMovement(List<(int X, int Y)> path)
         {
-            const int framesPerStep = 10; // Liczba klatek na jeden krok
+            const int framesPerStep = 3; // Liczba klatek na jeden krok
 
             foreach (var (targetX, targetY) in path)
             {
@@ -82,7 +82,7 @@ namespace MobileApp.Pages
                     _drawable.SetAnimatedPosition(interpolatedX, interpolatedY);
                     GameCanvas.Invalidate();
 
-                    await Task.Delay(16); // ~60 FPS
+                    await Task.Delay(5); // 16 to bêdzie ~60 FPS
                 }
 
                 _drawable.SetTemporaryPlayerPosition(targetX, targetY);
