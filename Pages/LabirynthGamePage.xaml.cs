@@ -30,14 +30,25 @@ namespace MobileApp.Pages
             UpdateCoinsRemaining();
         }
 
+        private bool _isAnimating = false;
+
         private async void MovePlayer(int deltaX, int deltaY)
         {
+            if (_isAnimating)
+            {
+                Debug.WriteLine("Ruch jest ju¿ w trakcie, poczekaj na zakoñczenie.");
+                return;
+            }
+
             if (_drawable.MovesRemaining > 0)
             {
                 var path = _drawable.GetPlayerPath(deltaX, deltaY);
                 if (path.Count > 0)
                 {
+                    _isAnimating = true; // Zablokuj mo¿liwoœæ kolejnego ruchu
                     await AnimatePlayerMovement(path);
+                    _isAnimating = false; // Odblokuj mo¿liwoœæ kolejnego ruchu
+
                     GameCanvas.Invalidate();
                     UpdateMovesRemaining();
                     UpdateCoinsRemaining();
@@ -53,6 +64,7 @@ namespace MobileApp.Pages
                 }
             }
         }
+
         private async Task AnimatePlayerMovement(List<(int X, int Y)> path)
         {
             const int framesPerStep = 10; // Liczba klatek na jeden krok
