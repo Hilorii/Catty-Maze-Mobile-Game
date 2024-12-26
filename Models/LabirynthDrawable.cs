@@ -49,8 +49,13 @@ namespace MobileApp.Models
                             canvas.FillRectangle(left, top, cellSize, cellSize);
                             break;
                         case 1: // Ściana
-                            canvas.FillColor = Colors.Black;
+                            canvas.FillColor = Colors.Transparent;
                             canvas.FillRectangle(left, top, cellSize, cellSize);
+                            Microsoft.Maui.Graphics.IImage _wallImage = LoadImage("Wall1.png");
+                            if (_wallImage != null)
+                            {
+                                canvas.DrawImage(_wallImage, left, top, cellSize, cellSize);
+                            }
                             break;
                         case 2:
                             canvas.FillColor = Colors.Transparent;
