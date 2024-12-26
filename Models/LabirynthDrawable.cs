@@ -35,6 +35,14 @@ namespace MobileApp.Models
             float offsetX = (dirtyRect.Width - (_map.GetLength(1) * cellSize)) / 2;
             float offsetY = (dirtyRect.Height - (_map.GetLength(0) * cellSize)) / 2;
 
+            // Rysowanie tła na całym ekranie
+            Microsoft.Maui.Graphics.IImage backgroundImage = LoadImage("yay.png");
+            if (backgroundImage != null)
+            {
+                canvas.DrawImage(backgroundImage, 0, 0, dirtyRect.Width, dirtyRect.Height);
+            }
+
+
             for (int y = 0; y < _map.GetLength(0); y++)
             {
                 for (int x = 0; x < _map.GetLength(1); x++)
@@ -47,6 +55,11 @@ namespace MobileApp.Models
                         case 0: //tło labiryntu
                             canvas.FillColor = Colors.Transparent;
                             canvas.FillRectangle(left, top, cellSize, cellSize);
+                            Microsoft.Maui.Graphics.IImage _backgroundImage = LoadImage("LabirynthBackground1.png");
+                            if (_backgroundImage != null)
+                            {
+                                canvas.DrawImage(_backgroundImage, left, top, cellSize, cellSize);
+                            }
                             break;
                         case 1: // Ściana
                             canvas.FillColor = Colors.Transparent;
@@ -57,13 +70,13 @@ namespace MobileApp.Models
                                 canvas.DrawImage(_wallImage, left, top, cellSize, cellSize);
                             }
                             break;
-                        case 2:
-                            canvas.FillColor = Colors.Transparent;
-                            canvas.FillRectangle(left, top, cellSize, cellSize);
+                        case 2: //Gracz
+                            Microsoft.Maui.Graphics.IImage behindPlayer = LoadImage("LabirynthBackground1.png");
+                            canvas.DrawImage(behindPlayer, left, top, cellSize, cellSize);
                             break;
                         case 3: // Moneta
-                            canvas.FillColor = Colors.Transparent;
-                            canvas.FillRectangle(left, top, cellSize, cellSize);
+                            Microsoft.Maui.Graphics.IImage behindCoin = LoadImage("LabirynthBackground1.png");
+                            canvas.DrawImage(behindCoin, left, top, cellSize, cellSize);
                             Microsoft.Maui.Graphics.IImage _coinImage = LoadImage("Coin.png");
                             if (_coinImage != null)
                             {
