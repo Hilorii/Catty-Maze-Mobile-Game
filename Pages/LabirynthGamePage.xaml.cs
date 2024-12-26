@@ -1,5 +1,4 @@
 using MobileApp.Models;
-using MobileApp.Pages;
 using System.Diagnostics;
 
 namespace MobileApp.Pages
@@ -24,102 +23,119 @@ namespace MobileApp.Pages
         public void SetLevel(int levelIndex)
         {
             Debug.WriteLine($"LabyrinthGamePage: Ustawianie poziomu {levelIndex}");
-            _drawable = new LabyrinthDrawable();
             _drawable.LoadLevel(levelIndex);
-            GameCanvas.Drawable = _drawable;
+            GameCanvas.Invalidate();
 
             UpdateMovesRemaining();
             UpdateCoinsRemaining();
         }
 
-        private void MovePlayer(int deltaX, int deltaY)
+        private async void MovePlayer(int deltaX, int deltaY)
         {
             if (_drawable.MovesRemaining > 0)
             {
-                bool success = _drawable.MovePlayer(deltaX, deltaY);
-                if (success)
+                var path = _drawable.GetPlayerPath(deltaX, deltaY);
+                if (path.Count > 0)
                 {
-                    Debug.WriteLine($"LabyrinthGamePage: Gracz poruszy³ siê w kierunku deltaX={deltaX}, deltaY={deltaY}");
+                    await AnimatePlayerMovement(path);
                     GameCanvas.Invalidate();
                     UpdateMovesRemaining();
                     UpdateCoinsRemaining();
 
-                    if (_drawable.CoinsRemaining == 0) // Ukoñczono poziom
+                    if (_drawable.CoinsRemaining == 0)
                     {
-                        Debug.WriteLine("LabyrinthGamePage: Ukoñczono poziom");
                         ShowLevelCompletePage();
                     }
-                    else if (_drawable.MovesRemaining == 0) // Koniec ruchów
+                    else if (_drawable.MovesRemaining == 0)
                     {
-                        Debug.WriteLine("LabyrinthGamePage: Koniec ruchów, wyœwietlanie strony przegranej");
-                        ShowLevelFailedPage(); // Wywo³anie nowej strony po przegranej
+                        ShowLevelFailedPage();
                     }
                 }
             }
         }
+        private async Task AnimatePlayerMovement(List<(int X, int Y)> path)
+        {
+            const int framesPerStep = 10; // Liczba klatek na jeden krok
+
+            foreach (var (targetX, targetY) in path)
+            {
+                // Pobieramy bie¿¹ce animowane pozycje (synchronizowane)
+                float startX = _drawable._animatedX; // <- U¿yj animowanych pozycji
+                float startY = _drawable._animatedY;
+
+                for (int frame = 1; frame <= framesPerStep; frame++)
+                {
+                    // Obliczamy interpolowane wartoœci pozycji
+                    float interpolatedX = startX + (targetX - startX) * (frame / (float)framesPerStep);
+                    float interpolatedY = startY + (targetY - startY) * (frame / (float)framesPerStep);
+
+                    // Logowanie dla diagnostyki
+                    Debug.WriteLine($"Interpolacja: Frame={frame}, X={interpolatedX}, Y={interpolatedY}");
+
+                    // Ustawiamy animowan¹ pozycjê
+                    _drawable.SetAnimatedPosition(interpolatedX, interpolatedY);
+
+                    // Odœwie¿amy widok
+                    GameCanvas.Invalidate();
+
+                    // Czekamy na kolejn¹ klatkê
+                    await Task.Delay(16); // ~60 FPS
+                }
+
+                // Na koñcu kroku ustawiamy rzeczywist¹ pozycjê
+                _drawable.SetTemporaryPlayerPosition(targetX, targetY);
+            }
+        }
+
+
+
+
 
         private void ShowLevelCompletePage()
         {
-            try
-            {
-                GameState.MarkLevelAsCompleted(_drawable.CurrentLevelIndex);
-
-                Debug.WriteLine("LabyrinthGamePage: Wyœwietlanie strony ukoñczenia poziomu...");
-                Navigation.PushModalAsync(new LevelCompletePage(
-                    onNextLevel: async () =>
-                    {
-                        Debug.WriteLine("LevelCompletePage: Przechodzenie do nastêpnego poziomu...");
-                        _drawable.LoadNextLevel();
-                        Debug.WriteLine("LabyrinthDrawable: Nastêpny poziom za³adowany.");
-                        GameCanvas.Invalidate();
-                        UpdateMovesRemaining();
-                        UpdateCoinsRemaining();
-                        await Navigation.PopModalAsync();
-                    },
-
-                    onExitToMenu: async () =>
-                    {
-                        Debug.WriteLine("LevelCompletePage: Powrót do menu g³ównego...");
-                        Application.Current.MainPage = new NavigationPage(new MainMenuPage());
-                    }
-
-                ));
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"LabyrinthGamePage: B³¹d podczas otwierania strony: {ex.Message}");
-            }
+            Navigation.PushModalAsync(new LevelCompletePage(
+                onNextLevel: async () =>
+                {
+                    _drawable.LoadNextLevel();
+                    GameCanvas.Invalidate();
+                    UpdateMovesRemaining();
+                    UpdateCoinsRemaining();
+                    await Navigation.PopModalAsync();
+                },
+                onExitToMenu: async () =>
+                {
+                    Application.Current.MainPage = new NavigationPage(new MainMenuPage());
+                }
+            ));
         }
 
         private void ShowLevelFailedPage()
         {
-            try
-            {
-                Debug.WriteLine("LabyrinthGamePage: Wyœwietlanie strony przegranej...");
-                Navigation.PushModalAsync(new LevelFailedPage(
-                    onRetryLevel: () =>
-                    {
-                        Debug.WriteLine("LevelFailedPage: Powtórzenie poziomu...");
-                        _drawable.ResetLevel();
-                        GameCanvas.Invalidate();
-                        UpdateMovesRemaining();
-                        UpdateCoinsRemaining();
-                        Navigation.PopModalAsync();
-                    },
-
-                    onExitToMenu: () =>
-                    {
-                        Debug.WriteLine("LevelFailedPage: Powrót do menu g³ównego...");
-                        Application.Current.MainPage = new NavigationPage(new MainMenuPage());
-                    }
-                ));
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"LabyrinthGamePage: B³¹d podczas otwierania strony przegranej: {ex.Message}");
-            }
+            Navigation.PushModalAsync(new LevelFailedPage(
+                onRetryLevel: () =>
+                {
+                    _drawable.ResetLevel();
+                    GameCanvas.Invalidate();
+                    UpdateMovesRemaining();
+                    UpdateCoinsRemaining();
+                    Navigation.PopModalAsync();
+                },
+                onExitToMenu: () =>
+                {
+                    Application.Current.MainPage = new NavigationPage(new MainMenuPage());
+                }
+            ));
         }
 
+        private void UpdateMovesRemaining()
+        {
+            MovesRemainingLabel.Text = $"Pozosta³e ruchy: {_drawable.MovesRemaining}";
+        }
+
+        private void UpdateCoinsRemaining()
+        {
+            MovesRemainingLabel.Text += $"\nPozosta³e monety: {_drawable.CoinsRemaining}";
+        }
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w lewo");
@@ -144,14 +160,6 @@ namespace MobileApp.Pages
             MovePlayer(0, 1);
         }
 
-        private void UpdateMovesRemaining()
-        {
-            MovesRemainingLabel.Text = $"Pozosta³e ruchy: {_drawable.MovesRemaining}";
-        }
 
-        private void UpdateCoinsRemaining()
-        {
-            MovesRemainingLabel.Text += $"\nPozosta³e monety: {_drawable.CoinsRemaining}";
-        }
     }
 }
