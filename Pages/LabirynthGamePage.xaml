@@ -10,13 +10,25 @@
                       HorizontalOptions="FillAndExpand"
                       VerticalOptions="FillAndExpand" />
 
-        <!-- Label na tle -->
+        <!-- Ruchy -->
         <Label x:Name="MovesRemainingLabel"
                Text="Pozostałe ruchy: 0"
                FontSize="18"
                TextColor="Black"
                BackgroundColor="Transparent"
                AbsoluteLayout.LayoutBounds="0.5,0.05,0.9,0.1" 
+               AbsoluteLayout.LayoutFlags="All"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"
+               ZIndex="2"/>
+
+        <!-- Pieniążki -->
+        <Label x:Name="CoinsRemainingLabel"
+               Text="Pozostałe monety: 0"
+               FontSize="18"
+               TextColor="Black"
+               BackgroundColor="Transparent"
+               AbsoluteLayout.LayoutBounds="3.1,0.08,0.9,0.1" 
                AbsoluteLayout.LayoutFlags="All"
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center"

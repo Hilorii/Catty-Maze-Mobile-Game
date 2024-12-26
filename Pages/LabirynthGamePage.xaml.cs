@@ -153,16 +153,17 @@ namespace MobileApp.Pages
 
         private void UpdateCoinsRemaining()
         {
-            if (_drawable.CoinsRemaining > 0)
+            if (_drawable.CoinsRemaining == 0)
             {
-                MovesRemainingLabel.Text += $"\nPozosta³e monety: {_drawable.CoinsRemaining}";
+                CoinsRemainingLabel.IsVisible = false;
             }
             else
             {
-                // Jeœli nie ma monet, upewnij siê, ¿e tekst jest poprawny
-                MovesRemainingLabel.Text = $"Pozosta³e ruchy: {_drawable.MovesRemaining}";
+                CoinsRemainingLabel.IsVisible = true;
+                CoinsRemainingLabel.Text = $"Pozosta³e monety: {_drawable.CoinsRemaining}";
             }
         }
+
 
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
         {
