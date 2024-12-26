@@ -95,7 +95,7 @@ namespace MobileApp.Models
             float playerLeft = offsetX + (_animatedX * cellSize);
             float playerTop = offsetY + (_animatedY * cellSize);
 
-            Microsoft.Maui.Graphics.IImage playerImage = LoadImage("playerr.png");
+            Microsoft.Maui.Graphics.IImage playerImage = LoadImage("Player.png");
             if (playerImage != null)
             {
                 canvas.DrawImage(playerImage, playerLeft, playerTop, cellSize, cellSize);
