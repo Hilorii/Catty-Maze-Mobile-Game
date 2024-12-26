@@ -49,21 +49,35 @@ namespace MobileApp.Pages
                     await AnimatePlayerMovement(path);
                     _isAnimating = false; // Odblokuj mo¿liwoœæ kolejnego ruchu
 
-                    GameCanvas.Invalidate();
-                    UpdateMovesRemaining();
-                    UpdateCoinsRemaining();
-
+                    // SprawdŸ, czy wszystkie monety zosta³y zebrane
                     if (_drawable.CoinsRemaining == 0)
                     {
+                        // Jeœli poziom ukoñczony, przejdŸ do ekranu sukcesu
                         ShowLevelCompletePage();
+                        return; // Przerwij dalsze przetwarzanie
                     }
-                    else if (_drawable.MovesRemaining == 0)
+
+                    // Jeœli ruchy siê skoñczy³y, poka¿ ekran pora¿ki
+                    if (_drawable.MovesRemaining == 0)
                     {
                         ShowLevelFailedPage();
+                        return; // Przerwij dalsze przetwarzanie
+                    }
+
+                    // Odœwie¿ UI tylko w przypadku, gdy poziom nie jest ukoñczony
+                    GameCanvas.Invalidate();
+                    UpdateMovesRemaining();
+
+                    // Aktualizuj liczbê monet tylko, jeœli s¹ jeszcze monety do zebrania
+                    if (_drawable.CoinsRemaining > 0)
+                    {
+                        UpdateCoinsRemaining();
                     }
                 }
             }
         }
+
+
 
         private async Task AnimatePlayerMovement(List<(int X, int Y)> path)
         {
@@ -139,8 +153,17 @@ namespace MobileApp.Pages
 
         private void UpdateCoinsRemaining()
         {
-            MovesRemainingLabel.Text += $"\nPozosta³e monety: {_drawable.CoinsRemaining}";
+            if (_drawable.CoinsRemaining > 0)
+            {
+                MovesRemainingLabel.Text += $"\nPozosta³e monety: {_drawable.CoinsRemaining}";
+            }
+            else
+            {
+                // Jeœli nie ma monet, upewnij siê, ¿e tekst jest poprawny
+                MovesRemainingLabel.Text = $"Pozosta³e ruchy: {_drawable.MovesRemaining}";
+            }
         }
+
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w lewo");
