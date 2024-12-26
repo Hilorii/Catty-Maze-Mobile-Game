@@ -44,16 +44,30 @@ namespace MobileApp.Models
 
                     switch (_map[y, x])
                     {
+                        case 0: //tło labiryntu
+                            canvas.FillColor = Colors.Transparent;
+                            canvas.FillRectangle(left, top, cellSize, cellSize);
+                            break;
                         case 1: // Ściana
                             canvas.FillColor = Colors.Black;
                             canvas.FillRectangle(left, top, cellSize, cellSize);
                             break;
+                        case 2:
+                            canvas.FillColor = Colors.Transparent;
+                            canvas.FillRectangle(left, top, cellSize, cellSize);
+                            break;
                         case 3: // Moneta
+                            canvas.FillColor = Colors.Transparent;
+                            canvas.FillRectangle(left, top, cellSize, cellSize);
                             Microsoft.Maui.Graphics.IImage _coinImage = LoadImage("Coin.png");
                             if (_coinImage != null)
                             {
                                 canvas.DrawImage(_coinImage, left, top, cellSize, cellSize);
                             }
+                            break;
+                        case 4: //niewidzialna ściana
+                            canvas.FillColor = Colors.Transparent;
+                            canvas.FillRectangle(left, top, cellSize, cellSize);
                             break;
                     }
                 }
