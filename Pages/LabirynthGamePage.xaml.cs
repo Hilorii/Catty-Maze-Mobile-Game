@@ -71,37 +71,30 @@ namespace MobileApp.Pages
 
             foreach (var (targetX, targetY) in path)
             {
-                // Pobieramy bie¿¹ce animowane pozycje (synchronizowane)
-                float startX = _drawable._animatedX; // <- U¿yj animowanych pozycji
+                float startX = _drawable._animatedX;
                 float startY = _drawable._animatedY;
 
                 for (int frame = 1; frame <= framesPerStep; frame++)
                 {
-                    // Obliczamy interpolowane wartoœci pozycji
                     float interpolatedX = startX + (targetX - startX) * (frame / (float)framesPerStep);
                     float interpolatedY = startY + (targetY - startY) * (frame / (float)framesPerStep);
 
-                    // Logowanie dla diagnostyki
-                    Debug.WriteLine($"Interpolacja: Frame={frame}, X={interpolatedX}, Y={interpolatedY}");
-
-                    // Ustawiamy animowan¹ pozycjê
                     _drawable.SetAnimatedPosition(interpolatedX, interpolatedY);
-
-                    // Odœwie¿amy widok
                     GameCanvas.Invalidate();
 
-                    // Czekamy na kolejn¹ klatkê
                     await Task.Delay(16); // ~60 FPS
                 }
 
-                // Na koñcu kroku ustawiamy rzeczywist¹ pozycjê
                 _drawable.SetTemporaryPlayerPosition(targetX, targetY);
+
+                // Sprawdzenie i zebranie monety, jeœli gracz na niej stan¹³
+                if (_drawable.CheckAndCollectCoin(targetX, targetY))
+                {
+                    Debug.WriteLine($"Moneta zebrana na pozycji: X={targetX}, Y={targetY}");
+                    UpdateCoinsRemaining();
+                }
             }
         }
-
-
-
-
 
         private void ShowLevelCompletePage()
         {

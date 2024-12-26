@@ -117,13 +117,6 @@ namespace MobileApp.Models
                     break;
 
                 path.Add((nextX, nextY));
-
-                if (_map[nextY, nextX] == 3)
-                {
-                    _map[nextY, nextX] = 0;
-                    _coinsRemaining--;
-                }
-
                 currentX = nextX;
                 currentY = nextY;
             }
@@ -137,6 +130,7 @@ namespace MobileApp.Models
 
             return path;
         }
+
 
 
 
@@ -218,6 +212,18 @@ namespace MobileApp.Models
             Debug.WriteLine($"LabyrinthDrawable: Resetowanie poziomu {_currentLevelIndex}");
             LoadLevel(_currentLevelIndex);
         }
+
+        public bool CheckAndCollectCoin(int x, int y)
+        {
+            if (_map[y, x] == 3) // Sprawdź, czy na polu jest moneta
+            {
+                _map[y, x] = 0; // Usuń monetę z mapy
+                _coinsRemaining--; // Zmniejsz licznik monet
+                return true; // Zwróć informację, że moneta została zebrana
+            }
+            return false;
+        }
+
 
     }
 }
