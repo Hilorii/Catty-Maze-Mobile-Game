@@ -26,7 +26,7 @@ namespace MobileApp.Models
         {
             _map = new int[1, 1]; // Tymczasowa wartość, aby unikać null
             LoadLevel();
-            LoadCoinImage();
+            LoadImage("Coin.png");
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -49,7 +49,7 @@ namespace MobileApp.Models
                             canvas.FillRectangle(left, top, cellSize, cellSize);
                             break;
                         case 3: // Moneta
-                            Microsoft.Maui.Graphics.IImage _coinImage = LoadCoinImage();
+                            Microsoft.Maui.Graphics.IImage _coinImage = LoadImage("Coin.png");
                             if (_coinImage != null)
                             {
                                 canvas.DrawImage(_coinImage, left, top, cellSize, cellSize);
@@ -63,7 +63,7 @@ namespace MobileApp.Models
             float playerLeft = offsetX + (_animatedX * cellSize);
             float playerTop = offsetY + (_animatedY * cellSize);
 
-            Microsoft.Maui.Graphics.IImage playerImage = LoadPlayerImage();
+            Microsoft.Maui.Graphics.IImage playerImage = LoadImage("playerr.png");
             if (playerImage != null)
             {
                 canvas.DrawImage(playerImage, playerLeft, playerTop, cellSize, cellSize);
@@ -154,11 +154,11 @@ namespace MobileApp.Models
 
 
 
-        private Microsoft.Maui.Graphics.IImage? LoadCoinImage()
+        private Microsoft.Maui.Graphics.IImage? LoadImage(string fileName)
         {
             try
             {
-                using var stream = FileSystem.OpenAppPackageFileAsync("Coin.png").GetAwaiter().GetResult();
+                using var stream = FileSystem.OpenAppPackageFileAsync(fileName).GetAwaiter().GetResult();
                 if (stream != null)
                 {
                     return Microsoft.Maui.Graphics.Platform.PlatformImage.FromStream(stream);
@@ -166,29 +166,12 @@ namespace MobileApp.Models
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Błąd ładowania obrazu monety: {ex.Message}");
+                Debug.WriteLine($"Błąd ładowania obrazu '{fileName}': {ex.Message}");
             }
 
             return null;
         }
 
-        private Microsoft.Maui.Graphics.IImage? LoadPlayerImage()
-        {
-            try
-            {
-                using var stream = FileSystem.OpenAppPackageFileAsync("playerr.png").GetAwaiter().GetResult();
-                if (stream != null)
-                {
-                    return Microsoft.Maui.Graphics.Platform.PlatformImage.FromStream(stream);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Błąd ładowania obrazu gracza: {ex.Message}");
-            }
-
-            return null;
-        }
 
         private float CalculateCellSize(RectF dirtyRect)
         {
