@@ -21,8 +21,8 @@
         <!-- Graficzne przedstawienie labiryntu -->
         <GraphicsView x:Name="GameCanvas"
                       Drawable="{Binding Drawable}"
-                      HeightRequest="500"
-                      WidthRequest="500"
+                      HorizontalOptions="Fill"
+                      VerticalOptions="Fill"
                       Grid.Row="1">
             <GraphicsView.GestureRecognizers>
                 <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipedLeft" />

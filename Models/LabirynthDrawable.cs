@@ -191,13 +191,17 @@ namespace MobileApp.Models
             return null;
         }
 
-
         private float CalculateCellSize(RectF dirtyRect)
         {
+            // Oblicz szerokość i wysokość komórki w zależności od dostępnego miejsca
             float cellWidth = dirtyRect.Width / _map.GetLength(1);
             float cellHeight = dirtyRect.Height / _map.GetLength(0);
+
+            // Zwróć mniejszą wartość, aby zachować proporcje i zmieścić całość
             return Math.Min(cellWidth, cellHeight);
         }
+
+
         public void LoadNextLevel()
         {
             _currentLevelIndex++;
