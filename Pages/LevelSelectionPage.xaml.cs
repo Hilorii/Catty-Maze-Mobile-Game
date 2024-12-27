@@ -22,5 +22,10 @@ namespace MobileApp.Pages
                 await Navigation.PushAsync(labyrinthGamePage);
             }
         }
+
+        private void OnBackPressed(object sender, EventArgs e)
+        {
+            Navigation.PopAsync(); // Cofanie do poprzedniej strony
+        }
     }
 }

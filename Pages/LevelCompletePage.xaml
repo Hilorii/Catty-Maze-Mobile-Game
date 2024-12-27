@@ -12,8 +12,9 @@
 
         <Label Text="Gratulacje! Ukończyłeś poziom!" 
                FontSize="24"
+               FontAttributes="Bold"
                HorizontalOptions="Center"
-               TextColor="White" />
+               TextColor="Yellow" />
 
         <!-- Przycisk "Next Level" - schowany, jeśli to ostatni level -->
         <ImageButton x:Name="NextLevelButton"

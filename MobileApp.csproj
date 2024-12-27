@@ -58,6 +58,8 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\Minecraft.ttf" />
+	  <None Remove="Resources\Images\backdown.png" />
+	  <None Remove="Resources\Images\backup.png" />
 	  <None Remove="Resources\Images\gsg.png" />
 	  <None Remove="Resources\Images\homedown.png" />
 	  <None Remove="Resources\Images\homeup.png" />

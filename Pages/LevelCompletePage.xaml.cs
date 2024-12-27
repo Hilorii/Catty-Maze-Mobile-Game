@@ -28,13 +28,10 @@ namespace MobileApp.Pages
             // Sprawdzamy, czy to ostatni level
             if (currentLevelIndex >= LevelData.AllLevels.Count - 1)
             {
-                // Ukrywamy przycisk NEXT
                 NextLevelButton.IsVisible = false;
             }
         }
 
-        // Drugi konstruktor - je¿eli wolisz zachowaæ stary podpis
-        // (ale w Twoim kodzie pewnie ju¿ zawsze passujesz currentLevelIndex)
         public LevelCompletePage(Action onNextLevel, Action onExitToMenu)
             : this(onNextLevel, onExitToMenu, 0)
         {

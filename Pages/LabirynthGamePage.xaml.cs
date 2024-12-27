@@ -48,7 +48,6 @@ namespace MobileApp.Pages
 
         private async void MovePlayer(int deltaX, int deltaY)
         {
-            // Jeœli animacja jest ju¿ w toku, ignorujemy kolejny ruch
             if (_isAnimating)
             {
                 Debug.WriteLine("Ruch jest ju¿ w trakcie, poczekaj na zakoñczenie.");
@@ -59,34 +58,28 @@ namespace MobileApp.Pages
             {
                 var path = _drawable.GetPlayerPath(deltaX, deltaY);
 
-                // Jeœli path jest pusty, to znaczy, ¿e gracz nie mo¿e siê ruszyæ
                 if (path.Count == 0)
                 {
                     Debug.WriteLine("Nie mo¿na siê ruszyæ w tê stronê (œciana lub koniec mapy).");
-                    // Anulujemy skok i odblokowujemy
                     _drawable.IsJumping = false;
                     return;
                 }
 
-                // Jeœli jest faktyczny ruch
-                _isAnimating = true; // Zablokuj kolejny ruch
+                _isAnimating = true;
                 await AnimatePlayerMovement(path);
-                _isAnimating = false; // Odblokuj
+                _isAnimating = false;
 
-                // SprawdŸ, czy wszystkie monety zebrane
                 if (_drawable.CoinsRemaining == 0)
                 {
                     ShowLevelCompletePage();
                     return;
                 }
-                // SprawdŸ, czy skoñczy³y siê ruchy
                 if (_drawable.MovesRemaining == 0)
                 {
                     ShowLevelFailedPage();
                     return;
                 }
 
-                // Odœwie¿
                 GameCanvas.Invalidate();
                 UpdateMovesRemaining();
                 if (_drawable.CoinsRemaining > 0)
@@ -115,10 +108,8 @@ namespace MobileApp.Pages
                     await Task.Delay(5);
                 }
 
-                // Ustaw finaln¹ pozycjê
                 _drawable.SetTemporaryPlayerPosition(targetX, targetY);
 
-                // SprawdŸ monety
                 if (_drawable.CheckAndCollectCoin(targetX, targetY))
                 {
                     Debug.WriteLine($"Moneta zebrana na pozycji: X={targetX}, Y={targetY}");
@@ -126,14 +117,12 @@ namespace MobileApp.Pages
                 }
             }
 
-            // Po zakoñczeniu ruchu: wracamy do IDLE
             _drawable.IsJumping = false;
             GameCanvas.Invalidate();
         }
 
         private void ShowLevelCompletePage()
         {
-            // Pobieramy index aktualnego poziomu
             int currentLevelIndex = _drawable.CurrentLevelIndex;
 
             Navigation.PushModalAsync(new LevelCompletePage(
@@ -149,10 +138,9 @@ namespace MobileApp.Pages
                 {
                     Application.Current.MainPage = new NavigationPage(new MainMenuPage());
                 },
-                currentLevelIndex: currentLevelIndex  // <-- przekazujemy index
+                currentLevelIndex: currentLevelIndex
             ));
         }
-
 
         private void ShowLevelFailedPage()
         {
@@ -190,11 +178,13 @@ namespace MobileApp.Pages
             }
         }
 
-        // --- GESTY ---
+        private void OnBackPressed(object sender, EventArgs e)
+        {
+            Navigation.PopAsync();
+        }
 
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
         {
-            // Ignorujemy, jeœli postaæ ju¿ skacze
             if (_drawable.IsJumping) return;
 
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w lewo");
@@ -228,7 +218,6 @@ namespace MobileApp.Pages
 
             _drawable.IsJumping = true;
             _drawable.SetPlayerImage("PlayerJumpRight.png");
-            // lub stwórz PlayerJumpUp.png
 
             MovePlayer(0, -1);
         }
@@ -242,7 +231,6 @@ namespace MobileApp.Pages
 
             _drawable.IsJumping = true;
             _drawable.SetPlayerImage("PlayerJumpRight.png");
-            // lub PlayerJumpDown.png
 
             MovePlayer(0, 1);
         }

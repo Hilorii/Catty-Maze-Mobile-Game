@@ -12,9 +12,10 @@
 
         <!-- Etykieta przegranej -->
         <Label Text="Niestety, przegrałeś!"
-               FontSize="24"
+               FontSize="35"
+               FontAttributes="Bold"
                HorizontalOptions="Center"
-               TextColor="White" />
+               TextColor="Red" />
 
         <!-- Przycisk graficzny: "Powtórz poziom" -->
         <ImageButton Clicked="OnRetryLevelClicked"

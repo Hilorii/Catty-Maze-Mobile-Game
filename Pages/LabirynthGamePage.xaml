@@ -1,6 +1,7 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApp.Pages.LabyrinthGamePage">
+
     <AbsoluteLayout>
         <!-- Tło obejmujące cały ekran -->
         <GraphicsView x:Name="BackgroundCanvas"
@@ -40,6 +41,25 @@
                HorizontalTextAlignment="Center"
                VerticalTextAlignment="Center"
                ZIndex="2"/>
+
+        <!-- Przycisk cofania -->
+        <ImageButton Source="backup.png"
+                     Clicked="OnBackPressed"
+                     Aspect="AspectFit"
+                     AbsoluteLayout.LayoutBounds="0.05, 0.05, 50, 50"
+                     AbsoluteLayout.LayoutFlags="PositionProportional"
+                     BackgroundColor="Transparent"
+                     ZIndex="3">
+            <ImageButton.Style>
+                <Style TargetType="ImageButton">
+                    <Style.Triggers>
+                        <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
+                            <Setter Property="Source" Value="backdown.png" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ImageButton.Style>
+        </ImageButton>
 
         <!-- Graficzne przedstawienie labiryntu -->
         <GraphicsView x:Name="GameCanvas"
