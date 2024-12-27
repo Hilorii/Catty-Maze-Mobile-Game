@@ -67,9 +67,9 @@
             Clicked="OnQuitApp"
             Aspect="AspectFit"
             HorizontalOptions="Center"
-            WidthRequest="240"
-            HeightRequest="80"
-            MinimumWidthRequest="240"
+            WidthRequest="180"
+            HeightRequest="60"
+            MinimumWidthRequest="180"
             MinimumHeightRequest="80">
             <ImageButton.Style>
                 <Style TargetType="ImageButton">
