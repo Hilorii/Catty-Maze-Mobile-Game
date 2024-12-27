@@ -10,6 +10,13 @@
                       HorizontalOptions="FillAndExpand"
                       VerticalOptions="FillAndExpand" />
 
+        <!-- Obrazek pod napisy (plansza z napisem) -->
+        <Image Source="gamesign.png"
+               AbsoluteLayout.LayoutBounds="0.5, 0.05, 330, 120"
+               AbsoluteLayout.LayoutFlags="PositionProportional"
+               Aspect="AspectFit" 
+               ZIndex="1"/>
+
         <!-- Ruchy -->
         <Label x:Name="MovesRemainingLabel"
                Text="Pozostałe ruchy: 0"
