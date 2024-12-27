@@ -12,6 +12,7 @@ namespace MobileApp.Pages
         public MainMenuPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
         }
 
         protected override void OnAppearing()

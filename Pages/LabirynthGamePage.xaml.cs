@@ -14,6 +14,7 @@ namespace MobileApp.Pages
         public LabyrinthGamePage()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             Debug.WriteLine("LabyrinthGamePage: Konstruktor wywo³any");
 
             _drawable = new LabyrinthDrawable();

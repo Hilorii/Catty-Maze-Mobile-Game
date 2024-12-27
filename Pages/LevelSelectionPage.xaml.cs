@@ -7,6 +7,7 @@ namespace MobileApp.Pages
         public LevelSelectionPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             BindingContext = this;
         }
 

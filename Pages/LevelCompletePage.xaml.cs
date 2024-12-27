@@ -16,7 +16,7 @@ namespace MobileApp.Pages
             int currentLevelIndex)
         {
             InitializeComponent();
-
+            NavigationPage.SetHasNavigationBar(this, false);
             _onNextLevel = onNextLevel
                            ?? throw new ArgumentNullException(nameof(onNextLevel),
                                "Akcja przejœcia do nastêpnego poziomu nie mo¿e byæ null.");

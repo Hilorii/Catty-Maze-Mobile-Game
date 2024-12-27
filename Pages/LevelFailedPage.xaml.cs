@@ -12,7 +12,7 @@ namespace MobileApp.Pages
         public LevelFailedPage(Action onRetryLevel, Action onExitToMenu)
         {
             InitializeComponent();
-
+            NavigationPage.SetHasNavigationBar(this, false);
             _onRetryLevel = onRetryLevel ?? throw new ArgumentNullException(
                 nameof(onRetryLevel),
                 "Akcja powtórzenia poziomu nie mo¿e byæ null.");
