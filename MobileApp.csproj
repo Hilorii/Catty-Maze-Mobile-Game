@@ -22,7 +22,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>MobileApp</ApplicationTitle>
+		<ApplicationTitle>Catty Maze</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.mobileapp</ApplicationId>
@@ -97,6 +97,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="AppShell.xaml.cs">
+	    <DependentUpon>AppShell.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="AppShell.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\LabirynthGamePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

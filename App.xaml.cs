@@ -7,8 +7,14 @@ namespace MobileApp
         public App()
         {
             InitializeComponent();
-
-            MainPage = new NavigationPage(new MainMenuPage());
+            MainPage = new NavigationPage(new MainMenuPage())
+            {
+                BarBackgroundColor = Colors.Transparent, 
+                BarTextColor = Colors.Transparent      
+            };
+            NavigationPage.SetHasNavigationBar(MainPage, false);
         }
     }
+
+
 }

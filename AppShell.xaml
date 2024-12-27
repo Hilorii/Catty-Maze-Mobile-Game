@@ -1,0 +1,15 @@
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:MobileApp.Pages"
+       x:Class="MobileApp.AppShell">
+
+    <!-- Menu główne -->
+    <ShellContent Title="Main Menu" ContentTemplate="{DataTemplate local:MainMenuPage}" />
+
+    <!-- Gra -->
+    <ShellContent Title="Labyrinth Game" ContentTemplate="{DataTemplate local:LabyrinthGamePage}" />
+
+    <!-- Wybór poziomu -->
+    <ShellContent Title="Level Selection" ContentTemplate="{DataTemplate local:LevelSelectionPage}" />
+
+</Shell>
