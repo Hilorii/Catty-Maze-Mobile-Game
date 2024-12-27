@@ -1,6 +1,7 @@
 using Microsoft.Maui.Controls;
 using System;
 using System.Diagnostics;
+using MobileApp.Models;
 
 namespace MobileApp.Pages
 {
@@ -9,18 +10,34 @@ namespace MobileApp.Pages
         private readonly Action _onNextLevel;
         private readonly Action _onExitToMenu;
 
-        public LevelCompletePage(Action onNextLevel, Action onExitToMenu)
+        public LevelCompletePage(
+            Action onNextLevel,
+            Action onExitToMenu,
+            int currentLevelIndex)
         {
             InitializeComponent();
 
-            // Walidacja przekazanych akcji
-            _onNextLevel = onNextLevel ?? throw new ArgumentNullException(
-                nameof(onNextLevel),
-                "Akcja przejœcia do nastêpnego poziomu nie mo¿e byæ null.");
+            _onNextLevel = onNextLevel
+                           ?? throw new ArgumentNullException(nameof(onNextLevel),
+                               "Akcja przejœcia do nastêpnego poziomu nie mo¿e byæ null.");
 
-            _onExitToMenu = onExitToMenu ?? throw new ArgumentNullException(
-                nameof(onExitToMenu),
-                "Akcja powrotu do menu nie mo¿e byæ null.");
+            _onExitToMenu = onExitToMenu
+                            ?? throw new ArgumentNullException(nameof(onExitToMenu),
+                                "Akcja powrotu do menu nie mo¿e byæ null.");
+
+            // Sprawdzamy, czy to ostatni level
+            if (currentLevelIndex >= LevelData.AllLevels.Count - 1)
+            {
+                // Ukrywamy przycisk NEXT
+                NextLevelButton.IsVisible = false;
+            }
+        }
+
+        // Drugi konstruktor - je¿eli wolisz zachowaæ stary podpis
+        // (ale w Twoim kodzie pewnie ju¿ zawsze passujesz currentLevelIndex)
+        public LevelCompletePage(Action onNextLevel, Action onExitToMenu)
+            : this(onNextLevel, onExitToMenu, 0)
+        {
         }
 
         private void OnNextLevelClicked(object sender, EventArgs e)

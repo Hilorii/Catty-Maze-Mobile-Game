@@ -4,17 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="MobileApp.Pages.MainMenuPage">
 
-    <VerticalStackLayout 
+    <VerticalStackLayout
         Padding="20"
         Spacing="10"
         VerticalOptions="Center">
 
-        <!-- TYTUŁ GRY -->
+        <!-- LOGO -->
         <Image Source="titlesign.png"
                Aspect="AspectFit"
                HorizontalOptions="Center"
-               WidthRequest="350"    
-               HeightRequest="150"
+               WidthRequest="300"
+               HeightRequest="100"
                MinimumWidthRequest="300"
                MinimumHeightRequest="100" />
 
@@ -23,17 +23,14 @@
             Clicked="OnStartGame"
             Aspect="AspectFit"
             HorizontalOptions="Center"
-            WidthRequest="240"    
+            WidthRequest="240"
             HeightRequest="80"
             MinimumWidthRequest="240"
             MinimumHeightRequest="80">
             <ImageButton.Style>
                 <Style TargetType="ImageButton">
-                    <!-- Domyślny stan (Up) -->
                     <Setter Property="Source" Value="startup.png" />
                     <Setter Property="BackgroundColor" Value="Transparent" />
-
-                    <!-- Stan wciśnięty (Down) -->
                     <Style.Triggers>
                         <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
                             <Setter Property="Source" Value="startdown.png" />
@@ -48,17 +45,14 @@
             Clicked="OnSelectLevel"
             Aspect="AspectFit"
             HorizontalOptions="Center"
-            WidthRequest="300"    
+            WidthRequest="300"
             HeightRequest="80"
             MinimumWidthRequest="300"
             MinimumHeightRequest="80">
             <ImageButton.Style>
                 <Style TargetType="ImageButton">
-                    <!-- Domyślny stan (Up) -->
                     <Setter Property="Source" Value="selectlevelup.png" />
                     <Setter Property="BackgroundColor" Value="Transparent" />
-
-                    <!-- Stan wciśnięty (Down) -->
                     <Style.Triggers>
                         <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
                             <Setter Property="Source" Value="selectleveldown.png" />
@@ -68,22 +62,19 @@
             </ImageButton.Style>
         </ImageButton>
 
-        <!-- Przycisk QUIT (wyjście z aplikacji) -->
+        <!-- Przycisk QUIT -->
         <ImageButton
             Clicked="OnQuitApp"
             Aspect="AspectFit"
             HorizontalOptions="Center"
-            WidthRequest="180"
+            WidthRequest="240"
             HeightRequest="80"
             MinimumWidthRequest="240"
             MinimumHeightRequest="80">
             <ImageButton.Style>
                 <Style TargetType="ImageButton">
-                    <!-- Domyślny stan (Up) -->
                     <Setter Property="Source" Value="quitup.png" />
                     <Setter Property="BackgroundColor" Value="Transparent" />
-
-                    <!-- Stan wciśnięty (Down) -->
                     <Style.Triggers>
                         <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
                             <Setter Property="Source" Value="quitdown.png" />

@@ -27,6 +27,20 @@ namespace MobileApp.Models
             return CompletedLevels.Contains(levelIndex);
         }
 
+        // Metoda do znalezienia pierwszego nieukończonego poziomu
+        // Zwraca -1, jeśli wszystkie ukończone.
+        public static int GetFirstIncompleteLevel()
+        {
+            for (int i = 0; i < LevelData.AllLevels.Count; i++)
+            {
+                if (!IsLevelCompleted(i))
+                {
+                    return i; // Pierwszy nieukończony
+                }
+            }
+            return -1; // Wszystkie ukończone
+        }
+
         // Ładowanie ukończonych poziomów z Preferences
         private static HashSet<int> LoadCompletedLevels()
         {

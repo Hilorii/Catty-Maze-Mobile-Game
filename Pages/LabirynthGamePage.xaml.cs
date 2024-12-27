@@ -132,6 +132,9 @@ namespace MobileApp.Pages
 
         private void ShowLevelCompletePage()
         {
+            // Pobieramy index aktualnego poziomu
+            int currentLevelIndex = _drawable.CurrentLevelIndex;
+
             Navigation.PushModalAsync(new LevelCompletePage(
                 onNextLevel: async () =>
                 {
@@ -144,9 +147,11 @@ namespace MobileApp.Pages
                 onExitToMenu: async () =>
                 {
                     Application.Current.MainPage = new NavigationPage(new MainMenuPage());
-                }
+                },
+                currentLevelIndex: currentLevelIndex  // <-- przekazujemy index
             ));
         }
+
 
         private void ShowLevelFailedPage()
         {
