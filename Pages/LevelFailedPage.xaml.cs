@@ -1,4 +1,5 @@
 using Microsoft.Maui.Controls;
+using System;
 using System.Diagnostics;
 
 namespace MobileApp.Pages
@@ -12,8 +13,13 @@ namespace MobileApp.Pages
         {
             InitializeComponent();
 
-            _onRetryLevel = onRetryLevel ?? throw new ArgumentNullException(nameof(onRetryLevel), "Akcja powtórzenia poziomu nie mo¿e byæ null.");
-            _onExitToMenu = onExitToMenu ?? throw new ArgumentNullException(nameof(onExitToMenu), "Akcja powrotu do menu nie mo¿e byæ null.");
+            _onRetryLevel = onRetryLevel ?? throw new ArgumentNullException(
+                nameof(onRetryLevel),
+                "Akcja powtórzenia poziomu nie mo¿e byæ null.");
+
+            _onExitToMenu = onExitToMenu ?? throw new ArgumentNullException(
+                nameof(onExitToMenu),
+                "Akcja powrotu do menu nie mo¿e byæ null.");
         }
 
         private void OnRetryLevelClicked(object sender, EventArgs e)

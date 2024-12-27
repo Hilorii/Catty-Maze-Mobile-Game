@@ -1,15 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MobileApp.Pages.LevelFailedPage">
-    <VerticalStackLayout Padding="20" Spacing="20" VerticalOptions="Center">
-        <Label Text="Niestety, przegrałeś!" 
-               FontSize="24" 
-               HorizontalOptions="Center" />
+             x:Class="MobileApp.Pages.LevelFailedPage"
+             BackgroundColor="Transparent">
 
-        <Button Text="Powtórz poziom" 
-                Clicked="OnRetryLevelClicked" />
+    <!-- Główny layout z przezroczystym tłem -->
+    <VerticalStackLayout Padding="20"
+                         Spacing="20"
+                         VerticalOptions="Center"
+                         BackgroundColor="Transparent">
 
-        <Button Text="Wyjdź do menu" 
-                Clicked="OnExitToMenuClicked" />
+        <!-- Etykieta przegranej -->
+        <Label Text="Niestety, przegrałeś!"
+               FontSize="24"
+               HorizontalOptions="Center"
+               TextColor="White" />
+
+        <!-- Przycisk graficzny: "Powtórz poziom" -->
+        <ImageButton Clicked="OnRetryLevelClicked"
+                     Aspect="AspectFit"
+                     HorizontalOptions="Center"
+                     BackgroundColor="Transparent"
+
+                     WidthRequest="240"
+                     HeightRequest="80"
+                     MinimumWidthRequest="240"
+                     MinimumHeightRequest="80">
+            <ImageButton.Style>
+                <Style TargetType="ImageButton">
+                    <!-- Domyślna grafika (Up) -->
+                    <Setter Property="Source" Value="restartup.png" />
+                    <!-- Po wciśnięciu (Down) -->
+                    <Style.Triggers>
+                        <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
+                            <Setter Property="Source" Value="restartdown.png" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ImageButton.Style>
+        </ImageButton>
+
+        <!-- Przycisk graficzny: "Wyjdź do menu" -->
+        <ImageButton Clicked="OnExitToMenuClicked"
+                     Aspect="AspectFit"
+                     HorizontalOptions="Center"
+                     BackgroundColor="Transparent"
+
+                     WidthRequest="150"
+                     HeightRequest="80"
+                     MinimumWidthRequest="150"
+                     MinimumHeightRequest="80">
+            <ImageButton.Style>
+                <Style TargetType="ImageButton">
+                    <!-- Domyślna grafika (Up) -->
+                    <Setter Property="Source" Value="homeup.png" />
+                    <!-- Po wciśnięciu (Down) -->
+                    <Style.Triggers>
+                        <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
+                            <Setter Property="Source" Value="homedown.png" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ImageButton.Style>
+        </ImageButton>
+
     </VerticalStackLayout>
 </ContentPage>

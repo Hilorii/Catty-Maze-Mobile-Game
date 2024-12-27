@@ -64,6 +64,8 @@
 	  <None Remove="Resources\Images\nextleveldown.png" />
 	  <None Remove="Resources\Images\nextlevelup.png" />
 	  <None Remove="Resources\Images\playerr.png" />
+	  <None Remove="Resources\Images\restartdown.png" />
+	  <None Remove="Resources\Images\restartup.png" />
 	  <None Remove="Resources\Images\SelectLevelDown.png" />
 	  <None Remove="Resources\Images\SelectLevelUp.png" />
 	  <None Remove="Resources\Images\StartDown.png" />
