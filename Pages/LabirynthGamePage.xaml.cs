@@ -182,10 +182,15 @@ namespace MobileApp.Pages
 
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
         {
+            // Naprawia bug z mozliwoscia obrotu graczem w trakcie skoku!
+            if (_drawable.IsJumping)
+            {
+                return;
+            }
+
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w lewo");
             _drawable.LastDirection = MovementDirection.Left;
 
-            // Animacja SKOKU
             _drawable.IsJumping = true;
             _drawable.SetPlayerImage("PlayerJumpLeft.png");
 
@@ -194,6 +199,10 @@ namespace MobileApp.Pages
 
         private void OnSwipedRight(object sender, SwipedEventArgs e)
         {
+            if (_drawable.IsJumping)
+            {
+                return;
+            }
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w prawo");
             _drawable.LastDirection = MovementDirection.Right;
 
@@ -205,6 +214,10 @@ namespace MobileApp.Pages
 
         private void OnSwipedUp(object sender, SwipedEventArgs e)
         {
+            if (_drawable.IsJumping)
+            {
+                return;
+            }
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w górê");
             _drawable.LastDirection = MovementDirection.Up;
 
@@ -218,6 +231,10 @@ namespace MobileApp.Pages
 
         private void OnSwipedDown(object sender, SwipedEventArgs e)
         {
+            if (_drawable.IsJumping)
+            {
+                return;
+            }
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w dó³");
             _drawable.LastDirection = MovementDirection.Down;
 
