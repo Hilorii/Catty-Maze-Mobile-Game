@@ -30,6 +30,16 @@ namespace MobileApp.Pages
             UpdateCoinsRemaining();
         }
 
+        private MovementDirection _lastMovementDirection;
+        public enum MovementDirection
+        {
+            Left,
+            Right,
+            Up,
+            Down
+        }
+
+
         private bool _isAnimating = false;
 
         private async void MovePlayer(int deltaX, int deltaY)
@@ -88,6 +98,7 @@ namespace MobileApp.Pages
                 float startX = _drawable._animatedX;
                 float startY = _drawable._animatedY;
 
+                // animacja przesuniêcia
                 for (int frame = 1; frame <= framesPerStep; frame++)
                 {
                     float interpolatedX = startX + (targetX - startX) * (frame / (float)framesPerStep);
@@ -96,19 +107,42 @@ namespace MobileApp.Pages
                     _drawable.SetAnimatedPosition(interpolatedX, interpolatedY);
                     GameCanvas.Invalidate();
 
-                    await Task.Delay(5); // 16 to bêdzie ~60 FPS
+                    await Task.Delay(5); // 16 = ~60 FPS
                 }
 
+                // finalne ustawienie pozycji
                 _drawable.SetTemporaryPlayerPosition(targetX, targetY);
 
-                // Sprawdzenie i zebranie monety, jeœli gracz na niej stan¹³
+                // sprawdŸ monety
                 if (_drawable.CheckAndCollectCoin(targetX, targetY))
                 {
                     Debug.WriteLine($"Moneta zebrana na pozycji: X={targetX}, Y={targetY}");
                     UpdateCoinsRemaining();
                 }
             }
+
+            // Po zakoñczeniu ca³ego path:
+            // ustaw grafikê "stoj¹c¹" w zale¿noœci od _lastMovementDirection
+            switch (_lastMovementDirection)
+            {
+                case MovementDirection.Left:
+                    _drawable.SetPlayerImage("PlayerStandLeft.png");
+                    break;
+                case MovementDirection.Right:
+                    _drawable.SetPlayerImage("PlayerStandRight.png");
+                    break;
+                case MovementDirection.Up:
+                    _drawable.SetPlayerImage("PlayerStandUp.png");
+                    break;
+                case MovementDirection.Down:
+                    // Na dó³ chcesz domyœln¹ Player.png
+                    _drawable.SetPlayerImage("Player.png");
+                    break;
+            }
+
+            GameCanvas.Invalidate(); // odœwie¿ widok
         }
+
 
         private void ShowLevelCompletePage()
         {
@@ -168,13 +202,18 @@ namespace MobileApp.Pages
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w lewo");
-            _drawable.SetPlayerImage("PlayerJumpLeftt.png");
+            _lastMovementDirection = MovementDirection.Left; // zapamiêtujemy kierunek
+
+            // Ustaw grafikê „skoku” w lewo
+            _drawable.SetPlayerImage("PlayerJumpLeft.png");
             MovePlayer(-1, 0);
         }
 
         private void OnSwipedRight(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w prawo");
+            _lastMovementDirection = MovementDirection.Right;
+
             _drawable.SetPlayerImage("PlayerJumpRight.png");
             MovePlayer(1, 0);
         }
@@ -182,6 +221,8 @@ namespace MobileApp.Pages
         private void OnSwipedUp(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w górê");
+            _lastMovementDirection = MovementDirection.Up;
+
             _drawable.SetPlayerImage("PlayerJumpRight.png");
             MovePlayer(0, -1);
         }
@@ -189,9 +230,12 @@ namespace MobileApp.Pages
         private void OnSwipedDown(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w dó³");
+            _lastMovementDirection = MovementDirection.Down;
+
             _drawable.SetPlayerImage("PlayerJumpRight.png");
             MovePlayer(0, 1);
         }
+
 
 
 
