@@ -47,6 +47,7 @@ namespace MobileApp.Pages
 
         private async void MovePlayer(int deltaX, int deltaY)
         {
+            // Jeœli animacja jest ju¿ w toku, ignorujemy kolejny ruch
             if (_isAnimating)
             {
                 Debug.WriteLine("Ruch jest ju¿ w trakcie, poczekaj na zakoñczenie.");
@@ -56,31 +57,39 @@ namespace MobileApp.Pages
             if (_drawable.MovesRemaining > 0)
             {
                 var path = _drawable.GetPlayerPath(deltaX, deltaY);
-                if (path.Count > 0)
+
+                // Jeœli path jest pusty, to znaczy, ¿e gracz nie mo¿e siê ruszyæ
+                if (path.Count == 0)
                 {
-                    _isAnimating = true; // Zablokuj kolejny ruch
-                    await AnimatePlayerMovement(path);
-                    _isAnimating = false; // Odblokuj
-
-                    // SprawdŸ, czy wszystkie monety zebrane
-                    if (_drawable.CoinsRemaining == 0)
-                    {
-                        ShowLevelCompletePage();
-                        return;
-                    }
-                    // SprawdŸ, czy skoñczy³y siê ruchy
-                    if (_drawable.MovesRemaining == 0)
-                    {
-                        ShowLevelFailedPage();
-                        return;
-                    }
-
-                    // Odœwie¿
-                    GameCanvas.Invalidate();
-                    UpdateMovesRemaining();
-                    if (_drawable.CoinsRemaining > 0)
-                        UpdateCoinsRemaining();
+                    Debug.WriteLine("Nie mo¿na siê ruszyæ w tê stronê (œciana lub koniec mapy).");
+                    // Anulujemy skok i odblokowujemy
+                    _drawable.IsJumping = false;
+                    return;
                 }
+
+                // Jeœli jest faktyczny ruch
+                _isAnimating = true; // Zablokuj kolejny ruch
+                await AnimatePlayerMovement(path);
+                _isAnimating = false; // Odblokuj
+
+                // SprawdŸ, czy wszystkie monety zebrane
+                if (_drawable.CoinsRemaining == 0)
+                {
+                    ShowLevelCompletePage();
+                    return;
+                }
+                // SprawdŸ, czy skoñczy³y siê ruchy
+                if (_drawable.MovesRemaining == 0)
+                {
+                    ShowLevelFailedPage();
+                    return;
+                }
+
+                // Odœwie¿
+                GameCanvas.Invalidate();
+                UpdateMovesRemaining();
+                if (_drawable.CoinsRemaining > 0)
+                    UpdateCoinsRemaining();
             }
         }
 
@@ -179,11 +188,8 @@ namespace MobileApp.Pages
 
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
         {
-            // Naprawia bug z mozliwoscia obrotu graczem w trakcie skoku!
-            if (_drawable.IsJumping)
-            {
-                return;
-            }
+            // Ignorujemy, jeœli postaæ ju¿ skacze
+            if (_drawable.IsJumping) return;
 
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w lewo");
             _drawable.LastDirection = MovementDirection.Left;
@@ -196,10 +202,8 @@ namespace MobileApp.Pages
 
         private void OnSwipedRight(object sender, SwipedEventArgs e)
         {
-            if (_drawable.IsJumping)
-            {
-                return;
-            }
+            if (_drawable.IsJumping) return;
+
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w prawo");
             _drawable.LastDirection = MovementDirection.Right;
 
@@ -211,33 +215,28 @@ namespace MobileApp.Pages
 
         private void OnSwipedUp(object sender, SwipedEventArgs e)
         {
-            if (_drawable.IsJumping)
-            {
-                return;
-            }
+            if (_drawable.IsJumping) return;
+
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w górê");
             _drawable.LastDirection = MovementDirection.Up;
 
             _drawable.IsJumping = true;
-            // Za³ó¿my, ¿e skok do góry u¿ywa tego samego sprite’a co w prawo
-            // (lub stwórz PlayerJumpUp.png, jeœli masz)
             _drawable.SetPlayerImage("PlayerJumpRight.png");
+            // lub stwórz PlayerJumpUp.png
 
             MovePlayer(0, -1);
         }
 
         private void OnSwipedDown(object sender, SwipedEventArgs e)
         {
-            if (_drawable.IsJumping)
-            {
-                return;
-            }
+            if (_drawable.IsJumping) return;
+
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w dó³");
             _drawable.LastDirection = MovementDirection.Down;
 
             _drawable.IsJumping = true;
-            // Równie¿ u¿ywamy PlayerJumpRight.png? Lub stwórz PlayerJumpDown.png
             _drawable.SetPlayerImage("PlayerJumpRight.png");
+            // lub PlayerJumpDown.png
 
             MovePlayer(0, 1);
         }

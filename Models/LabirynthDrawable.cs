@@ -112,7 +112,6 @@ namespace MobileApp.Models
             // 2. Jeśli nie skaczemy (IsJumping==false), używamy klatki idle + obrót
             if (IsJumping)
             {
-                // Rysuj jedną grafikę skoku (np. PlayerJumpLeft.png)
                 var jumpImage = LoadImage(_currentPlayerImage);
                 if (jumpImage != null)
                 {
@@ -192,7 +191,8 @@ namespace MobileApp.Models
                     nextY < 0 || nextY >= _map.GetLength(0) ||
                     _map[nextY, nextX] == 1)
                 {
-                    break; // Kolizja albo koniec
+                    // Kolizja albo wychodzimy poza mapę
+                    break;
                 }
 
                 path.Add((nextX, nextY));
@@ -206,7 +206,6 @@ namespace MobileApp.Models
                 _playerY = currentY;
                 MovesRemaining--;
             }
-
             return path;
         }
 
@@ -282,7 +281,6 @@ namespace MobileApp.Models
             IsJumping = false;
         }
 
-
         private float CalculateCellSize(RectF dirtyRect)
         {
             float cellWidth = dirtyRect.Width / _map.GetLength(1);
@@ -310,26 +308,16 @@ namespace MobileApp.Models
         // Obrót w zależności od kierunku
         private float GetRotationAngle(MovementDirection direction)
         {
+            // Dostosuj wartości do swojej logiki
             switch (direction)
             {
-                case MovementDirection.Right:
-                    // Po skoku w prawo ma być 90
-                    return 270f;
-                case MovementDirection.Up:
-                    // Po skoku w górę ma być 180
-                    return 180f;
-                case MovementDirection.Left:
-                    // Po skoku w lewo ma być 270
-                    return 90f;
-                case MovementDirection.Down:
-                    // Po skoku w dół ma być 0
-                    return 0f;
-                default:
-                    return 0f;
+                case MovementDirection.Right: return 270f;
+                case MovementDirection.Up: return 180f;
+                case MovementDirection.Left: return 90f;
+                case MovementDirection.Down: return 0f;
+                default: return 0f;
             }
         }
-
-
 
         // Kierunki
         public enum MovementDirection
