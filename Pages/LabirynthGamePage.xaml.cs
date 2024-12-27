@@ -1,11 +1,16 @@
 using MobileApp.Models;
 using System.Diagnostics;
+// Pozwala u¿ywaæ MovementDirection bez przedrostka LabyrinthDrawable.
+using static MobileApp.Models.LabyrinthDrawable;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
 
 namespace MobileApp.Pages
 {
     public partial class LabyrinthGamePage : ContentPage
     {
         private LabyrinthDrawable _drawable;
+        private bool _isAnimating = false;
 
         public LabyrinthGamePage()
         {
@@ -15,9 +20,22 @@ namespace MobileApp.Pages
             _drawable = new LabyrinthDrawable();
             GameCanvas.Drawable = _drawable;
 
+            // Wczytaj pierwszy poziom (domyœlnie 0)
             _drawable.LoadLevel();
             UpdateMovesRemaining();
             UpdateCoinsRemaining();
+
+            // Timer do animacji IDLE
+            Device.StartTimer(TimeSpan.FromMilliseconds(300), () =>
+            {
+                // Jeœli nie skaczemy, to prze³¹czamy klatkê idle
+                if (!_drawable.IsJumping)
+                {
+                    _drawable.NextIdleFrame();
+                    GameCanvas.Invalidate();
+                }
+                return true; // Powtarzaj w nieskoñczonoœæ
+            });
         }
 
         public void SetLevel(int levelIndex)
@@ -29,18 +47,6 @@ namespace MobileApp.Pages
             UpdateMovesRemaining();
             UpdateCoinsRemaining();
         }
-
-        private MovementDirection _lastMovementDirection;
-        public enum MovementDirection
-        {
-            Left,
-            Right,
-            Up,
-            Down
-        }
-
-
-        private bool _isAnimating = false;
 
         private async void MovePlayer(int deltaX, int deltaY)
         {
@@ -55,62 +61,57 @@ namespace MobileApp.Pages
                 var path = _drawable.GetPlayerPath(deltaX, deltaY);
                 if (path.Count > 0)
                 {
-                    _isAnimating = true; // Zablokuj mo¿liwoœæ kolejnego ruchu
+                    _isAnimating = true; // Zablokuj kolejny ruch
                     await AnimatePlayerMovement(path);
-                    _isAnimating = false; // Odblokuj mo¿liwoœæ kolejnego ruchu
+                    _isAnimating = false; // Odblokuj
 
-                    // SprawdŸ, czy wszystkie monety zosta³y zebrane
+                    // SprawdŸ, czy wszystkie monety zebrane
                     if (_drawable.CoinsRemaining == 0)
                     {
-                        // Jeœli poziom ukoñczony, przejdŸ do ekranu sukcesu
                         ShowLevelCompletePage();
                         return;
                     }
-
-                    // Jeœli ruchy siê skoñczy³y, poka¿ ekran pora¿ki
+                    // SprawdŸ, czy skoñczy³y siê ruchy
                     if (_drawable.MovesRemaining == 0)
                     {
                         ShowLevelFailedPage();
                         return;
                     }
 
-                    // Odœwie¿ UI tylko w przypadku, gdy poziom nie jest ukoñczony
+                    // Odœwie¿
                     GameCanvas.Invalidate();
                     UpdateMovesRemaining();
-
-                    // Aktualizuj liczbê monet tylko, jeœli s¹ jeszcze monety do zebrania
                     if (_drawable.CoinsRemaining > 0)
-                    {
                         UpdateCoinsRemaining();
-                    }
                 }
             }
         }
 
-
-
         private async Task AnimatePlayerMovement(List<(int X, int Y)> path)
         {
-            const int framesPerStep = 3; // Liczba klatek na jeden krok
+            const int framesPerStep = 3;
 
             foreach (var (targetX, targetY) in path)
             {
-                float startX = _drawable._animatedX;
-                float startY = _drawable._animatedY;
+                float startX = _drawable.AnimatedX;
+                float startY = _drawable.AnimatedY;
 
                 for (int frame = 1; frame <= framesPerStep; frame++)
                 {
-                    float interpolatedX = startX + (targetX - startX) * (frame / (float)framesPerStep);
-                    float interpolatedY = startY + (targetY - startY) * (frame / (float)framesPerStep);
+                    float t = frame / (float)framesPerStep;
+                    float interpolatedX = startX + (targetX - startX) * t;
+                    float interpolatedY = startY + (targetY - startY) * t;
 
                     _drawable.SetAnimatedPosition(interpolatedX, interpolatedY);
                     GameCanvas.Invalidate();
 
-                    await Task.Delay(5); // 16 = ~60 FPS
+                    await Task.Delay(5);
                 }
 
+                // Ustaw finaln¹ pozycjê
                 _drawable.SetTemporaryPlayerPosition(targetX, targetY);
 
+                // SprawdŸ monety
                 if (_drawable.CheckAndCollectCoin(targetX, targetY))
                 {
                     Debug.WriteLine($"Moneta zebrana na pozycji: X={targetX}, Y={targetY}");
@@ -118,25 +119,10 @@ namespace MobileApp.Pages
                 }
             }
 
-            switch (_lastMovementDirection)
-            {
-                case MovementDirection.Left:
-                    _drawable.SetPlayerImage("PlayerStandLeft.png");
-                    break;
-                case MovementDirection.Right:
-                    _drawable.SetPlayerImage("PlayerStandRight.png");
-                    break;
-                case MovementDirection.Up:
-                    _drawable.SetPlayerImage("PlayerStandUp.png");
-                    break;
-                case MovementDirection.Down:
-                    _drawable.SetPlayerImage("Player.png");
-                    break;
-            }
-
+            // Po zakoñczeniu ruchu: wracamy do IDLE
+            _drawable.IsJumping = false;
             GameCanvas.Invalidate();
         }
-
 
         private void ShowLevelCompletePage()
         {
@@ -192,45 +178,54 @@ namespace MobileApp.Pages
             }
         }
 
+        // --- GESTY ---
 
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w lewo");
-            _lastMovementDirection = MovementDirection.Left;
+            _drawable.LastDirection = MovementDirection.Left;
 
+            // Animacja SKOKU
+            _drawable.IsJumping = true;
             _drawable.SetPlayerImage("PlayerJumpLeft.png");
+
             MovePlayer(-1, 0);
         }
 
         private void OnSwipedRight(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w prawo");
-            _lastMovementDirection = MovementDirection.Right;
+            _drawable.LastDirection = MovementDirection.Right;
 
+            _drawable.IsJumping = true;
             _drawable.SetPlayerImage("PlayerJumpRight.png");
+
             MovePlayer(1, 0);
         }
 
         private void OnSwipedUp(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w górê");
-            _lastMovementDirection = MovementDirection.Up;
+            _drawable.LastDirection = MovementDirection.Up;
 
+            _drawable.IsJumping = true;
+            // Za³ó¿my, ¿e skok do góry u¿ywa tego samego sprite’a co w prawo
+            // (lub stwórz PlayerJumpUp.png, jeœli masz)
             _drawable.SetPlayerImage("PlayerJumpRight.png");
+
             MovePlayer(0, -1);
         }
 
         private void OnSwipedDown(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w dó³");
-            _lastMovementDirection = MovementDirection.Down;
+            _drawable.LastDirection = MovementDirection.Down;
 
+            _drawable.IsJumping = true;
+            // Równie¿ u¿ywamy PlayerJumpRight.png? Lub stwórz PlayerJumpDown.png
             _drawable.SetPlayerImage("PlayerJumpRight.png");
+
             MovePlayer(0, 1);
         }
-
-
-
-
     }
 }
