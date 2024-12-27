@@ -11,8 +11,8 @@
                       VerticalOptions="FillAndExpand" />
 
         <!-- Obrazek pod napisy (plansza z napisem) -->
-        <Image Source="gamesign.png"
-               AbsoluteLayout.LayoutBounds="0.5, 0.05, 330, 120"
+        <Image Source="gsg.png"
+               AbsoluteLayout.LayoutBounds="0.5, 0.05, 240, 110"
                AbsoluteLayout.LayoutFlags="PositionProportional"
                Aspect="AspectFit" 
                ZIndex="1"/>
@@ -21,7 +21,7 @@
         <Label x:Name="MovesRemainingLabel"
                Text="Pozostałe ruchy: 0"
                FontSize="18"
-               TextColor="Red"
+               TextColor="Yellow"
                BackgroundColor="Transparent"
                AbsoluteLayout.LayoutBounds="0.5,0.05,0.9,0.1" 
                AbsoluteLayout.LayoutFlags="All"
@@ -33,7 +33,7 @@
         <Label x:Name="CoinsRemainingLabel"
                Text="Pozostałe monety: 0"
                FontSize="18"
-               TextColor="Red"
+               TextColor="Yellow"
                BackgroundColor="Transparent"
                AbsoluteLayout.LayoutBounds="0.5,0.08,0.9,0.1" 
                AbsoluteLayout.LayoutFlags="All"
