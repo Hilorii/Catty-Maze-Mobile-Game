@@ -64,12 +64,15 @@
 	  <None Remove="Resources\Images\nextleveldown.png" />
 	  <None Remove="Resources\Images\nextlevelup.png" />
 	  <None Remove="Resources\Images\playerr.png" />
+	  <None Remove="Resources\Images\quitdown.png" />
+	  <None Remove="Resources\Images\quitup.png" />
 	  <None Remove="Resources\Images\restartdown.png" />
 	  <None Remove="Resources\Images\restartup.png" />
 	  <None Remove="Resources\Images\SelectLevelDown.png" />
 	  <None Remove="Resources\Images\SelectLevelUp.png" />
 	  <None Remove="Resources\Images\StartDown.png" />
 	  <None Remove="Resources\Images\StartUp.png" />
+	  <None Remove="Resources\Images\titlesign.png" />
 	  <None Remove="Resources\Raw\Coin.png" />
 	  <None Remove="Resources\Raw\LabirynthBackground1.png" />
 	  <None Remove="Resources\Raw\LBG.png" />
