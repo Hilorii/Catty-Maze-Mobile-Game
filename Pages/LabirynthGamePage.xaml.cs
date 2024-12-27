@@ -1,6 +1,5 @@
 using MobileApp.Models;
 using System.Diagnostics;
-// Pozwala u¿ywaæ MovementDirection bez przedrostka LabyrinthDrawable.
 using static MobileApp.Models.LabyrinthDrawable;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
@@ -20,21 +19,19 @@ namespace MobileApp.Pages
             _drawable = new LabyrinthDrawable();
             GameCanvas.Drawable = _drawable;
 
-            // Wczytaj pierwszy poziom (domyœlnie 0)
             _drawable.LoadLevel();
             UpdateMovesRemaining();
             UpdateCoinsRemaining();
 
             // Timer do animacji IDLE
-            Device.StartTimer(TimeSpan.FromMilliseconds(300), () =>
+            Device.StartTimer(TimeSpan.FromMilliseconds(500), () =>
             {
-                // Jeœli nie skaczemy, to prze³¹czamy klatkê idle
                 if (!_drawable.IsJumping)
                 {
                     _drawable.NextIdleFrame();
                     GameCanvas.Invalidate();
                 }
-                return true; // Powtarzaj w nieskoñczonoœæ
+                return true;
             });
         }
 

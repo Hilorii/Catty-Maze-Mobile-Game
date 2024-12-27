@@ -34,8 +34,8 @@ namespace MobileApp.Models
         public int PlayerX => _playerX;
         public int PlayerY => _playerY;
 
-        // Animacja IDLE: 3 klatki
-        private readonly string[] _idleFrames = { "Player.png", "Player.png", "Player.png" };
+        // Animacja IDLE
+        private readonly string[] _idleFrames = { "Player1.png", "Player2.png", "Player3.png" };
         private int _currentIdleFrame = 0;
 
         // Aktualna grafika (gdy IsJumping = true)
@@ -43,8 +43,8 @@ namespace MobileApp.Models
 
         public LabyrinthDrawable()
         {
-            _map = new int[1, 1]; // Placeholder, żeby nie było null
-            LoadLevel(); // Domyślnie wczytaj poziom 0
+            _map = new int[1, 1];
+            LoadLevel();
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -99,7 +99,6 @@ namespace MobileApp.Models
                             break;
 
                         case 4: // niewidzialna ściana
-                            // Nic nie rysujemy
                             break;
                     }
                 }
