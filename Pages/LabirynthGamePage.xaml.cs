@@ -168,26 +168,31 @@ namespace MobileApp.Pages
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w lewo");
+            _drawable.SetPlayerImage("PlayerJumpLeftt.png");
             MovePlayer(-1, 0);
         }
 
         private void OnSwipedRight(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w prawo");
+            _drawable.SetPlayerImage("PlayerJumpRight.png");
             MovePlayer(1, 0);
         }
 
         private void OnSwipedUp(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w górê");
+            _drawable.SetPlayerImage("PlayerJumpRight.png");
             MovePlayer(0, -1);
         }
 
         private void OnSwipedDown(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w dó³");
+            _drawable.SetPlayerImage("PlayerJumpRight.png");
             MovePlayer(0, 1);
         }
+
 
 
     }

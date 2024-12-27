@@ -13,6 +13,7 @@ namespace MobileApp.Models
         private int _currentLevelIndex;
         private int _coinsRemaining;
         public float _animatedX, _animatedY;
+        private string _currentPlayerImage = "Player.png";
 
         private Microsoft.Maui.Graphics.IImage? _coinImage;
 
@@ -95,12 +96,19 @@ namespace MobileApp.Models
             float playerLeft = offsetX + (_animatedX * cellSize);
             float playerTop = offsetY + (_animatedY * cellSize);
 
-            Microsoft.Maui.Graphics.IImage playerImage = LoadImage("Player.png");
+            Microsoft.Maui.Graphics.IImage playerImage = LoadImage(_currentPlayerImage);
             if (playerImage != null)
             {
                 canvas.DrawImage(playerImage, playerLeft, playerTop, cellSize, cellSize);
             }
+
         }
+
+        public void SetPlayerImage(string imageName)
+        {
+            _currentPlayerImage = imageName;
+        }
+
 
         public void LoadLevel(int levelIndex = 0)
         {
