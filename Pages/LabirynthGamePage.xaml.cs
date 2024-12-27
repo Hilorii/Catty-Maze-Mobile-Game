@@ -64,14 +64,14 @@ namespace MobileApp.Pages
                     {
                         // Jeœli poziom ukoñczony, przejdŸ do ekranu sukcesu
                         ShowLevelCompletePage();
-                        return; // Przerwij dalsze przetwarzanie
+                        return;
                     }
 
                     // Jeœli ruchy siê skoñczy³y, poka¿ ekran pora¿ki
                     if (_drawable.MovesRemaining == 0)
                     {
                         ShowLevelFailedPage();
-                        return; // Przerwij dalsze przetwarzanie
+                        return;
                     }
 
                     // Odœwie¿ UI tylko w przypadku, gdy poziom nie jest ukoñczony
@@ -98,7 +98,6 @@ namespace MobileApp.Pages
                 float startX = _drawable._animatedX;
                 float startY = _drawable._animatedY;
 
-                // animacja przesuniêcia
                 for (int frame = 1; frame <= framesPerStep; frame++)
                 {
                     float interpolatedX = startX + (targetX - startX) * (frame / (float)framesPerStep);
@@ -110,10 +109,8 @@ namespace MobileApp.Pages
                     await Task.Delay(5); // 16 = ~60 FPS
                 }
 
-                // finalne ustawienie pozycji
                 _drawable.SetTemporaryPlayerPosition(targetX, targetY);
 
-                // sprawdŸ monety
                 if (_drawable.CheckAndCollectCoin(targetX, targetY))
                 {
                     Debug.WriteLine($"Moneta zebrana na pozycji: X={targetX}, Y={targetY}");
@@ -121,8 +118,6 @@ namespace MobileApp.Pages
                 }
             }
 
-            // Po zakoñczeniu ca³ego path:
-            // ustaw grafikê "stoj¹c¹" w zale¿noœci od _lastMovementDirection
             switch (_lastMovementDirection)
             {
                 case MovementDirection.Left:
@@ -135,12 +130,11 @@ namespace MobileApp.Pages
                     _drawable.SetPlayerImage("PlayerStandUp.png");
                     break;
                 case MovementDirection.Down:
-                    // Na dó³ chcesz domyœln¹ Player.png
                     _drawable.SetPlayerImage("Player.png");
                     break;
             }
 
-            GameCanvas.Invalidate(); // odœwie¿ widok
+            GameCanvas.Invalidate();
         }
 
 
@@ -202,9 +196,8 @@ namespace MobileApp.Pages
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
         {
             Debug.WriteLine("LabyrinthGamePage: Przesuniêcie w lewo");
-            _lastMovementDirection = MovementDirection.Left; // zapamiêtujemy kierunek
+            _lastMovementDirection = MovementDirection.Left;
 
-            // Ustaw grafikê „skoku” w lewo
             _drawable.SetPlayerImage("PlayerJumpLeft.png");
             MovePlayer(-1, 0);
         }
