@@ -1,14 +1,26 @@
 ﻿using Microsoft.Maui.Controls;
 using System;
-using MobileApp.Models; // <-- żeby mieć dostęp do GameState i LevelData
+using MobileApp.Models; // <-- Żeby mieć dostęp do GameState i LevelData
+using Microsoft.Maui.Storage; // <-- Do Preferences
 
 namespace MobileApp.Pages
 {
     public partial class MainMenuPage : ContentPage
     {
+        private const string SoundPreferenceKey = "IsSoundEnabled";
+
         public MainMenuPage()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Ustawienie grafiki przycisku dźwięku w zależności od preferencji
+            bool isSoundEnabled = Preferences.Get(SoundPreferenceKey, true); // Domyślnie włączony
+            UpdateSoundButton(isSoundEnabled);
         }
 
         private async void OnStartGame(object sender, EventArgs e)
@@ -44,6 +56,29 @@ namespace MobileApp.Pages
         {
             // Najprostsze wyjście z aplikacji
             Environment.Exit(0);
+        }
+
+        private void OnToggleSound(object sender, EventArgs e)
+        {
+            // Pobierz aktualny stan dźwięku
+            bool isSoundEnabled = Preferences.Get(SoundPreferenceKey, true);
+
+            // Przełącz stan
+            isSoundEnabled = !isSoundEnabled;
+
+            // Zapisz nowy stan
+            Preferences.Set(SoundPreferenceKey, isSoundEnabled);
+
+            // Zaktualizuj grafikę przycisku
+            UpdateSoundButton(isSoundEnabled);
+        }
+
+        private void UpdateSoundButton(bool isSoundEnabled)
+        {
+            SoundToggleButton.Source = isSoundEnabled ? "musicon.png" : "musicoff.png";
+
+            // Tutaj możesz dodać logikę, która faktycznie włącza/wyłącza dźwięk
+            // np. AudioPlayer.SetVolume(isSoundEnabled ? 1.0 : 0.0);
         }
     }
 }

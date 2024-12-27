@@ -2,87 +2,114 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="MobileApp.Pages.MainMenuPage">
+    x:Class="MobileApp.Pages.MainMenuPage"
+    BackgroundColor="Transparent">
 
-    <VerticalStackLayout
-        Padding="20"
-        Spacing="10"
-        VerticalOptions="Center">
+    <!-- Tło -->
+    <AbsoluteLayout>
+        <!-- Obraz tła -->
+        <Image Source="tmpbg.png"
+               Aspect="AspectFill"
+               AbsoluteLayout.LayoutBounds="0,0,1,1"
+               AbsoluteLayout.LayoutFlags="All" />
 
-        <!-- LOGO -->
-        <Image Source="titlesign.png"
-               Aspect="AspectFit"
-               HorizontalOptions="Center"
-               WidthRequest="300"
-               HeightRequest="100"
-               MinimumWidthRequest="300"
-               MinimumHeightRequest="100" />
+        <!-- Cała zawartość strony -->
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="10"
+            AbsoluteLayout.LayoutBounds="0.5,0.5,0.8,0.9"
+            AbsoluteLayout.LayoutFlags="All"
+            BackgroundColor="Transparent"
+            VerticalOptions="Center">
 
-        <!-- Przycisk START -->
-        <ImageButton 
-            Clicked="OnStartGame"
-            Aspect="AspectFit"
-            HorizontalOptions="Center"
-            WidthRequest="240"
-            HeightRequest="80"
-            MinimumWidthRequest="240"
-            MinimumHeightRequest="80">
-            <ImageButton.Style>
-                <Style TargetType="ImageButton">
-                    <Setter Property="Source" Value="startup.png" />
-                    <Setter Property="BackgroundColor" Value="Transparent" />
-                    <Style.Triggers>
-                        <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
-                            <Setter Property="Source" Value="startdown.png" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ImageButton.Style>
-        </ImageButton>
+            <!-- LOGO -->
+            <Image Source="titlesign.png"
+                   Aspect="AspectFit"
+                   HorizontalOptions="Center"
+                   WidthRequest="300"
+                   HeightRequest="100"
+                   MinimumWidthRequest="300"
+                   MinimumHeightRequest="100"
+                   VerticalOptions="Start" />
 
-        <!-- Przycisk SELECT LEVEL -->
-        <ImageButton 
-            Clicked="OnSelectLevel"
-            Aspect="AspectFit"
-            HorizontalOptions="Center"
-            WidthRequest="300"
-            HeightRequest="80"
-            MinimumWidthRequest="300"
-            MinimumHeightRequest="80">
-            <ImageButton.Style>
-                <Style TargetType="ImageButton">
-                    <Setter Property="Source" Value="selectlevelup.png" />
-                    <Setter Property="BackgroundColor" Value="Transparent" />
-                    <Style.Triggers>
-                        <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
-                            <Setter Property="Source" Value="selectleveldown.png" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ImageButton.Style>
-        </ImageButton>
+            <!-- Przycisk START -->
+            <ImageButton 
+                Clicked="OnStartGame"
+                Aspect="AspectFit"
+                HorizontalOptions="Center"
+                WidthRequest="240"
+                HeightRequest="80"
+                MinimumWidthRequest="240"
+                MinimumHeightRequest="80">
+                <ImageButton.Style>
+                    <Style TargetType="ImageButton">
+                        <Setter Property="Source" Value="startup.png" />
+                        <Setter Property="BackgroundColor" Value="Transparent" />
+                        <Style.Triggers>
+                            <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
+                                <Setter Property="Source" Value="startdown.png" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ImageButton.Style>
+            </ImageButton>
 
-        <!-- Przycisk QUIT -->
-        <ImageButton
-            Clicked="OnQuitApp"
-            Aspect="AspectFit"
-            HorizontalOptions="Center"
-            WidthRequest="180"
-            HeightRequest="60"
-            MinimumWidthRequest="180"
-            MinimumHeightRequest="80">
-            <ImageButton.Style>
-                <Style TargetType="ImageButton">
-                    <Setter Property="Source" Value="quitup.png" />
-                    <Setter Property="BackgroundColor" Value="Transparent" />
-                    <Style.Triggers>
-                        <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
-                            <Setter Property="Source" Value="quitdown.png" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ImageButton.Style>
-        </ImageButton>
+            <!-- Przycisk SELECT LEVEL -->
+            <ImageButton 
+                Clicked="OnSelectLevel"
+                Aspect="AspectFit"
+                HorizontalOptions="Center"
+                WidthRequest="300"
+                HeightRequest="80"
+                MinimumWidthRequest="300"
+                MinimumHeightRequest="80">
+                <ImageButton.Style>
+                    <Style TargetType="ImageButton">
+                        <Setter Property="Source" Value="selectlevelup.png" />
+                        <Setter Property="BackgroundColor" Value="Transparent" />
+                        <Style.Triggers>
+                            <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
+                                <Setter Property="Source" Value="selectleveldown.png" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ImageButton.Style>
+            </ImageButton>
 
-    </VerticalStackLayout>
+            <!-- Przycisk QUIT -->
+            <ImageButton
+                Clicked="OnQuitApp"
+                Aspect="AspectFit"
+                HorizontalOptions="Center"
+                WidthRequest="180"
+                HeightRequest="60"
+                MinimumWidthRequest="180"
+                MinimumHeightRequest="80">
+                <ImageButton.Style>
+                    <Style TargetType="ImageButton">
+                        <Setter Property="Source" Value="quitup.png" />
+                        <Setter Property="BackgroundColor" Value="Transparent" />
+                        <Style.Triggers>
+                            <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
+                                <Setter Property="Source" Value="quitdown.png" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ImageButton.Style>
+            </ImageButton>
+
+        </VerticalStackLayout>
+
+        <!-- Przycisk włączania/wyłączania muzyki -->
+        <ImageButton x:Name="SoundToggleButton"
+                     Clicked="OnToggleSound"
+                     Aspect="AspectFit"
+                     WidthRequest="50"
+                     HeightRequest="50"
+                     MinimumWidthRequest="50"
+                     MinimumHeightRequest="50"
+                     AbsoluteLayout.LayoutBounds="1,0,50,50"
+                     AbsoluteLayout.LayoutFlags="PositionProportional"
+                     BackgroundColor="Transparent" />
+    </AbsoluteLayout>
 </ContentPage>

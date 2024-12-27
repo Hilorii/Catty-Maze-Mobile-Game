@@ -61,6 +61,8 @@
 	  <None Remove="Resources\Images\gsg.png" />
 	  <None Remove="Resources\Images\homedown.png" />
 	  <None Remove="Resources\Images\homeup.png" />
+	  <None Remove="Resources\Images\musicoff.png" />
+	  <None Remove="Resources\Images\musicon.png" />
 	  <None Remove="Resources\Images\nextleveldown.png" />
 	  <None Remove="Resources\Images\nextlevelup.png" />
 	  <None Remove="Resources\Images\playerr.png" />
@@ -73,6 +75,7 @@
 	  <None Remove="Resources\Images\StartDown.png" />
 	  <None Remove="Resources\Images\StartUp.png" />
 	  <None Remove="Resources\Images\titlesign.png" />
+	  <None Remove="Resources\Images\tmpbg.png" />
 	  <None Remove="Resources\Raw\Coin.png" />
 	  <None Remove="Resources\Raw\LabirynthBackground1.png" />
 	  <None Remove="Resources\Raw\LBG.png" />
