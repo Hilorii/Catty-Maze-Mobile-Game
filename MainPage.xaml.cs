@@ -1,20 +1,25 @@
-﻿namespace MobileApp.Pages;
+﻿using Microsoft.Maui.Controls;
+using System;
 
-public partial class MainMenuPage : ContentPage
+namespace MobileApp.Pages
 {
-    public MainMenuPage()
+    public partial class MainMenuPage : ContentPage
     {
-        InitializeComponent();
-    }
+        public MainMenuPage()
+        {
+            InitializeComponent();
+        }
 
-    private async void OnStartGame(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new LabyrinthGamePage());
-    }
+        private async void OnStartGame(object sender, EventArgs e)
+        {
+            // Nawigacja do strony z grą:
+            await Navigation.PushAsync(new LabyrinthGamePage());
+        }
 
-    private async void OnSelectLevel(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new LevelSelectionPage());
+        private async void OnSelectLevel(object sender, EventArgs e)
+        {
+            // Nawigacja do strony z wyborem poziomu:
+            await Navigation.PushAsync(new LevelSelectionPage());
+        }
     }
-
 }

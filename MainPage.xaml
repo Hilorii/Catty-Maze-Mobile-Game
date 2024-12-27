@@ -1,8 +1,55 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApp.Pages.MainMenuPage">
-    <VerticalStackLayout Padding="20" Spacing="10" VerticalOptions="Center">
-        <Button Text="Start Game" Clicked="OnStartGame" />
-        <Button Text="Select Level" Clicked="OnSelectLevel" />
+
+    <VerticalStackLayout Padding="20"
+                         Spacing="10"
+                         VerticalOptions="Center">
+
+        <!-- Przycisk START -->
+        <ImageButton Clicked="OnStartGame"
+                     Aspect="AspectFit"
+                     HorizontalOptions="Center"
+                     WidthRequest="240"    
+                     HeightRequest="80">
+            <ImageButton.Style>
+                <Style TargetType="ImageButton">
+                    <!-- Domyślny stan (Up) -->
+                    <Setter Property="Source" Value="startup.png" />
+                    <Setter Property="BackgroundColor" Value="Transparent" />
+
+                    <!-- Stan wciśnięty (Down) -->
+                    <Style.Triggers>
+                        <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
+                            <Setter Property="Source" Value="startdown.png" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ImageButton.Style>
+        </ImageButton>
+
+        <!-- Przycisk SELECT LEVEL -->
+        <ImageButton Clicked="OnSelectLevel"
+                     Aspect="AspectFit"
+                     HorizontalOptions="Center"
+                     WidthRequest="300"    
+                     HeightRequest="80">
+            <ImageButton.Style>
+                <Style TargetType="ImageButton">
+                    <!-- Domyślny stan (Up) -->
+                    <Setter Property="Source" Value="selectlevelup.png" />
+                    <Setter Property="BackgroundColor" Value="Transparent" />
+
+                    <!-- Stan wciśnięty (Down) -->
+                    <Style.Triggers>
+                        <Trigger TargetType="ImageButton" Property="IsPressed" Value="True">
+                            <Setter Property="Source" Value="selectleveldown.png" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ImageButton.Style>
+        </ImageButton>
+
     </VerticalStackLayout>
 </ContentPage>

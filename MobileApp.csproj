@@ -60,6 +60,10 @@
 	  <None Remove="Resources\Fonts\Minecraft.ttf" />
 	  <None Remove="Resources\Images\gsg.png" />
 	  <None Remove="Resources\Images\playerr.png" />
+	  <None Remove="Resources\Images\SelectLevelDown.png" />
+	  <None Remove="Resources\Images\SelectLevelUp.png" />
+	  <None Remove="Resources\Images\StartDown.png" />
+	  <None Remove="Resources\Images\StartUp.png" />
 	  <None Remove="Resources\Raw\Coin.png" />
 	  <None Remove="Resources\Raw\LabirynthBackground1.png" />
 	  <None Remove="Resources\Raw\LBG.png" />
