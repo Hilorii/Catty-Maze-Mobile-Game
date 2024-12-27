@@ -59,6 +59,10 @@
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\Minecraft.ttf" />
 	  <None Remove="Resources\Images\gsg.png" />
+	  <None Remove="Resources\Images\homedown.png" />
+	  <None Remove="Resources\Images\homeup.png" />
+	  <None Remove="Resources\Images\nextleveldown.png" />
+	  <None Remove="Resources\Images\nextlevelup.png" />
 	  <None Remove="Resources\Images\playerr.png" />
 	  <None Remove="Resources\Images\SelectLevelDown.png" />
 	  <None Remove="Resources\Images\SelectLevelUp.png" />

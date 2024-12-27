@@ -1,4 +1,5 @@
 using Microsoft.Maui.Controls;
+using System;
 using System.Diagnostics;
 
 namespace MobileApp.Pages
@@ -13,8 +14,13 @@ namespace MobileApp.Pages
             InitializeComponent();
 
             // Walidacja przekazanych akcji
-            _onNextLevel = onNextLevel ?? throw new ArgumentNullException(nameof(onNextLevel), "Akcja przejœcia do nastêpnego poziomu nie mo¿e byæ null.");
-            _onExitToMenu = onExitToMenu ?? throw new ArgumentNullException(nameof(onExitToMenu), "Akcja powrotu do menu nie mo¿e byæ null.");
+            _onNextLevel = onNextLevel ?? throw new ArgumentNullException(
+                nameof(onNextLevel),
+                "Akcja przejœcia do nastêpnego poziomu nie mo¿e byæ null.");
+
+            _onExitToMenu = onExitToMenu ?? throw new ArgumentNullException(
+                nameof(onExitToMenu),
+                "Akcja powrotu do menu nie mo¿e byæ null.");
         }
 
         private void OnNextLevelClicked(object sender, EventArgs e)
