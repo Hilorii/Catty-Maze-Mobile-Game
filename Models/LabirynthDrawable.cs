@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Storage;
+
 
 namespace MobileApp.Models
 {
-    public class LabyrinthDrawable : IDrawable
+    public class LabyrinthDrawable : Microsoft.Maui.Graphics.IDrawable
     {
         // Mapa
         private int[,] _map;
@@ -41,13 +41,17 @@ namespace MobileApp.Models
         // Aktualna grafika (gdy IsJumping = true)
         private string _currentPlayerImage = "PlayerJumpRight.png";
 
+        // =========[ NOWOŚĆ: Cache obrazów ]=========
+        private static readonly Dictionary<string, Microsoft.Maui.Graphics.IImage?> _imageCache
+            = new Dictionary<string, Microsoft.Maui.Graphics.IImage?>();
+
         public LabyrinthDrawable()
         {
             _map = new int[1, 1];
             LoadLevel();
         }
 
-        public void Draw(ICanvas canvas, RectF dirtyRect)
+        public void Draw(Microsoft.Maui.Graphics.ICanvas canvas, Microsoft.Maui.Graphics.RectF dirtyRect)
         {
             float cellSize = CalculateCellSize(dirtyRect);
             float offsetX = (dirtyRect.Width - (_map.GetLength(1) * cellSize)) / 2;
@@ -99,6 +103,7 @@ namespace MobileApp.Models
                             break;
 
                         case 4: // niewidzialna ściana
+                            // Nic nie rysujemy
                             break;
                     }
                 }
@@ -262,10 +267,9 @@ namespace MobileApp.Models
             }
             Debug.WriteLine($"LabyrinthDrawable: Ładowanie poziomu {_currentLevelIndex}");
             LoadLevel(_currentLevelIndex);
-            // Przywróć „domyślny” kierunek, np. Down (0°)
-            LastDirection = MovementDirection.Down;
 
-            // Na wszelki wypadek wyłącz skok
+            // Przywróć „domyślny” kierunek
+            LastDirection = MovementDirection.Down;
             IsJumping = false;
         }
 
@@ -274,14 +278,12 @@ namespace MobileApp.Models
             Debug.WriteLine($"LabyrinthDrawable: Resetowanie poziomu {_currentLevelIndex}");
             LoadLevel(_currentLevelIndex);
 
-            // Przywróć „domyślny” kierunek, np. Down (0°)
+            // Przywróć „domyślny” kierunek
             LastDirection = MovementDirection.Down;
-
-            // Na wszelki wypadek wyłącz skok
             IsJumping = false;
         }
 
-        private float CalculateCellSize(RectF dirtyRect)
+        private float CalculateCellSize(Microsoft.Maui.Graphics.RectF dirtyRect)
         {
             float cellWidth = dirtyRect.Width / _map.GetLength(1);
             float cellHeight = dirtyRect.Height / _map.GetLength(0);
@@ -290,18 +292,29 @@ namespace MobileApp.Models
 
         private Microsoft.Maui.Graphics.IImage? LoadImage(string fileName)
         {
+            // Najpierw sprawdzamy, czy w cache już jest ten obraz
+            if (_imageCache.TryGetValue(fileName, out var cachedImage))
+            {
+                return cachedImage;
+            }
+
             try
             {
                 using var stream = FileSystem.OpenAppPackageFileAsync(fileName).GetAwaiter().GetResult();
                 if (stream != null)
                 {
-                    return Microsoft.Maui.Graphics.Platform.PlatformImage.FromStream(stream);
+                    var loadedImage = Microsoft.Maui.Graphics.Platform.PlatformImage.FromStream(stream);
+                    _imageCache[fileName] = loadedImage;
+                    return loadedImage;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Błąd ładowania obrazu '{fileName}': {ex.Message}");
             }
+
+            // Jeśli nie udało się wczytać obrazu – zapisz null w cache, żeby uniknąć kolejnych prób
+            _imageCache[fileName] = null;
             return null;
         }
 
