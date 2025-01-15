@@ -46,12 +46,6 @@ namespace MobileApp.Pages
             Music.ShouldMute = !isSoundEnabled;
         }
 
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            Music.Handler?.DisconnectHandler();
-        }
-
         public void SetLevel(int levelIndex)
         {
             Debug.WriteLine($"LabyrinthGamePage: Ustawianie poziomu {levelIndex}");
@@ -152,6 +146,7 @@ namespace MobileApp.Pages
                 },
                 onExitToMenu: async () =>
                 {
+                    Music.Handler?.DisconnectHandler();
                     Application.Current.MainPage = new NavigationPage(new MainMenuPage());
                 },
                 currentLevelIndex: currentLevelIndex
@@ -171,6 +166,7 @@ namespace MobileApp.Pages
                 },
                 onExitToMenu: () =>
                 {
+                    Music.Handler?.DisconnectHandler();
                     Application.Current.MainPage = new NavigationPage(new MainMenuPage());
                 }
             ));
@@ -196,6 +192,7 @@ namespace MobileApp.Pages
 
         private void OnBackPressed(object sender, EventArgs e)
         {
+            Music.Handler?.DisconnectHandler();
             Navigation.PopAsync();
         }
 
