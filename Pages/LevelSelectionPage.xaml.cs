@@ -4,6 +4,23 @@ namespace MobileApp.Pages
 {
     public partial class LevelSelectionPage : ContentPage
     {
+        private List<int> _levels => Enumerable.Range(1, LevelData.AllLevels.Count).ToList();
+
+        public List<KeyValuePair<int, string>> LevelButtons
+        {
+            get
+            {
+                var levelButtons = new List<KeyValuePair<int, string>>(); // nr poziomu, nazwa pliku obrazka
+                foreach (var level in _levels)
+                {
+                    var imageFileName = $"level{level}{(GameState.CompletedLevels.Contains(level) ? "down" : "up")}";
+                    var levelButton = new KeyValuePair<int, string>(level, imageFileName);
+                    levelButtons.Add(levelButton);
+                }
+                return levelButtons;
+            }
+        }
+
         public LevelSelectionPage()
         {
             InitializeComponent();
@@ -15,14 +32,16 @@ namespace MobileApp.Pages
         {
             base.OnAppearing();
             MainMenuPage.PlayMusic();
+
+            LevelSelect.SelectedItem = null; // aby umo¿liwiæ wybór tego samego poziomu jeszcze raz
         }
 
-        public List<int> Levels => Enumerable.Range(1, LevelData.AllLevels.Count).ToList();
 
         private async void OnLevelSelected(object sender, SelectionChangedEventArgs e)
         {
-            if (e.CurrentSelection.FirstOrDefault() is int selectedLevel)
+            if (e.CurrentSelection.FirstOrDefault() is KeyValuePair<int, string> selectedButton)
             {
+                var selectedLevel = selectedButton.Key;
                 var labyrinthGamePage = new LabyrinthGamePage();
                 labyrinthGamePage.SetLevel(selectedLevel - 1); // Ustawienie wybranego poziomu
                 await Navigation.PushAsync(labyrinthGamePage);
