@@ -2,16 +2,18 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Class="MobileApp.Pages.MainMenuPage"
     BackgroundColor="Transparent">
 
     <!-- Tło -->
     <AbsoluteLayout>
         <!-- Obraz tła -->
-        <Image Source="tmpbg.png"
-               Aspect="AspectFill"
-               AbsoluteLayout.LayoutBounds="0,0,1,1"
-               AbsoluteLayout.LayoutFlags="All" />
+        <Image
+            Source="tmpbg.png"
+            Aspect="AspectFill"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All" />
 
         <!-- Cała zawartość strony -->
         <VerticalStackLayout
@@ -23,14 +25,15 @@
             VerticalOptions="Center">
 
             <!-- LOGO -->
-            <Image Source="titlesign.png"
-                   Aspect="AspectFit"
-                   HorizontalOptions="Center"
-                   WidthRequest="300"
-                   HeightRequest="100"
-                   MinimumWidthRequest="300"
-                   MinimumHeightRequest="100"
-                   VerticalOptions="Start" />
+            <Image
+                Source="titlesign.png"
+                Aspect="AspectFit"
+                HorizontalOptions="Center"
+                WidthRequest="300"
+                HeightRequest="100"
+                MinimumWidthRequest="300"
+                MinimumHeightRequest="100"
+                VerticalOptions="Start" />
 
             <!-- Przycisk START -->
             <ImageButton 
@@ -101,15 +104,26 @@
         </VerticalStackLayout>
 
         <!-- Przycisk włączania/wyłączania muzyki -->
-        <ImageButton x:Name="SoundToggleButton"
-                     Clicked="OnToggleSound"
-                     Aspect="AspectFit"
-                     WidthRequest="50"
-                     HeightRequest="50"
-                     MinimumWidthRequest="50"
-                     MinimumHeightRequest="50"
-                     AbsoluteLayout.LayoutBounds="1,0,50,50"
-                     AbsoluteLayout.LayoutFlags="PositionProportional"
-                     BackgroundColor="Transparent" />
+        <ImageButton
+            x:Name="SoundToggleButton"
+            Clicked="OnToggleSound"
+            Aspect="AspectFit"
+            WidthRequest="50"
+            HeightRequest="50"
+            MinimumWidthRequest="50"
+            MinimumHeightRequest="50"
+            AbsoluteLayout.LayoutBounds="1,0,50,50"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            BackgroundColor="Transparent" />
+        
+        <!-- Muzyka -->
+        <toolkit:MediaElement
+            x:Name="Music"
+            Source="embed://pixel1.mp3"
+            WidthRequest="0"
+            HeightRequest="0"
+            ShouldShowPlaybackControls="False"
+            ShouldAutoPlay="True"
+            ShouldLoopPlayback="True" />
     </AbsoluteLayout>
 </ContentPage>

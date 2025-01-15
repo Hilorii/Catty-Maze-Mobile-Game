@@ -8,6 +8,7 @@ namespace MobileApp.Pages
 {
     public partial class LabyrinthGamePage : ContentPage
     {
+        private const string SoundPreferenceKey = "IsSoundEnabled";
         private LabyrinthDrawable _drawable;
         private bool _isAnimating = false;
 
@@ -34,6 +35,21 @@ namespace MobileApp.Pages
                 }
                 return true;
             });
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            MainMenuPage.StopMusic();
+
+            bool isSoundEnabled = Preferences.Get(SoundPreferenceKey, true);
+            Music.ShouldMute = !isSoundEnabled;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Music.Handler?.DisconnectHandler();
         }
 
         public void SetLevel(int levelIndex)

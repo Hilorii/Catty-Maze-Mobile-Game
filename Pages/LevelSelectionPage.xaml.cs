@@ -11,6 +11,12 @@ namespace MobileApp.Pages
             BindingContext = this;
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            MainMenuPage.PlayMusic();
+        }
+
         public List<int> Levels => Enumerable.Range(1, LevelData.AllLevels.Count).ToList();
 
         private async void OnLevelSelected(object sender, SelectionChangedEventArgs e)

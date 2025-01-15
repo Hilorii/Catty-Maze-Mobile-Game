@@ -8,9 +8,11 @@ namespace MobileApp.Pages
     public partial class MainMenuPage : ContentPage
     {
         private const string SoundPreferenceKey = "IsSoundEnabled";
+        private static MainMenuPage? _instance;
 
         public MainMenuPage()
         {
+            _instance = this;
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
         }
@@ -22,6 +24,19 @@ namespace MobileApp.Pages
             // Ustawienie grafiki przycisku dźwięku w zależności od preferencji
             bool isSoundEnabled = Preferences.Get(SoundPreferenceKey, true); // Domyślnie włączony
             UpdateSoundButton(isSoundEnabled);
+
+            // Włączenie muzyki
+            PlayMusic();
+        }
+
+        public static void PlayMusic()
+        {
+            _instance?.Music.Play();
+        }
+
+        public static void StopMusic()
+        {
+            _instance?.Music.Stop();
         }
 
         private async void OnStartGame(object sender, EventArgs e)
@@ -78,8 +93,8 @@ namespace MobileApp.Pages
         {
             SoundToggleButton.Source = isSoundEnabled ? "musicon.png" : "musicoff.png";
 
-            // Tutaj możesz dodać logikę, która faktycznie włącza/wyłącza dźwięk
-            // np. AudioPlayer.SetVolume(isSoundEnabled ? 1.0 : 0.0);
+            // Włączanie/wyłączanie dźwięku
+            Music.ShouldMute = !isSoundEnabled;
         }
     }
 }
