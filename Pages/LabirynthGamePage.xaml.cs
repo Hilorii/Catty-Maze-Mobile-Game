@@ -193,7 +193,8 @@ namespace MobileApp.Pages
         private void OnBackPressed(object sender, EventArgs e)
         {
             Music.Handler?.DisconnectHandler();
-            Navigation.PopAsync();
+            //Navigation.PopAsync();
+            Navigation.PopToRootAsync(); // ¿eby od razu wraca³o do strony g³ównej
         }
 
         private void OnSwipedLeft(object sender, SwipedEventArgs e)
