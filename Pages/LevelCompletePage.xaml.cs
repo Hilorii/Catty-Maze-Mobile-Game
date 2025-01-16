@@ -17,6 +17,7 @@ namespace MobileApp.Pages
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
+            GameState.MarkLevelAsCompleted(currentLevelIndex);
             _onNextLevel = onNextLevel
                            ?? throw new ArgumentNullException(nameof(onNextLevel),
                                "Akcja przejœcia do nastêpnego poziomu nie mo¿e byæ null.");

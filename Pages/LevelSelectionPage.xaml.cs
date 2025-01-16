@@ -13,7 +13,7 @@ namespace MobileApp.Pages
                 var levelButtons = new List<KeyValuePair<int, string>>(); // nr poziomu, nazwa pliku obrazka
                 foreach (var level in _levels)
                 {
-                    var imageFileName = $"level{level}{(GameState.CompletedLevels.Contains(level) ? "down" : "up")}";
+                    var imageFileName = $"level{level}{(GameState.CompletedLevels.Contains(level - 1) ? "down" : "up")}";
                     var levelButton = new KeyValuePair<int, string>(level, imageFileName);
                     levelButtons.Add(levelButton);
                 }
