@@ -181,7 +181,7 @@ namespace MobileApp.Pages
 
         private void UpdateMovesRemaining()
         {
-            MovesRemainingLabel.Text = $"Pozosta³e ruchy: {_drawable.MovesRemaining}";
+            MovesRemainingLabel.Text = $"Moves Remaining: {_drawable.MovesRemaining}";
         }
 
         private void UpdateCoinsRemaining()
@@ -193,7 +193,7 @@ namespace MobileApp.Pages
             else
             {
                 CoinsRemainingLabel.IsVisible = true;
-                CoinsRemainingLabel.Text = $"Pozosta³e monety: {_drawable.CoinsRemaining}";
+                CoinsRemainingLabel.Text = $"Coins Remaining: {_drawable.CoinsRemaining}";
             }
         }
 

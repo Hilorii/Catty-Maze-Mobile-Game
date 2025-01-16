@@ -21,7 +21,7 @@
 
         <!-- Ruchy -->
         <Label x:Name="MovesRemainingLabel"
-               Text="Pozostałe ruchy: 0"
+               Text="Moves Remaining: 0"
                FontSize="18"
                TextColor="Yellow"
                BackgroundColor="Transparent"
@@ -33,7 +33,7 @@
 
         <!-- Pieniążki -->
         <Label x:Name="CoinsRemainingLabel"
-               Text="Pozostałe monety: 0"
+               Text="Coins Remaining: 0"
                FontSize="18"
                TextColor="Yellow"
                BackgroundColor="Transparent"

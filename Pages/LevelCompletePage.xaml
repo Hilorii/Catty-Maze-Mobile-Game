@@ -10,8 +10,8 @@
                          VerticalOptions="Center"
                          BackgroundColor="Transparent">
 
-        <Label Text="Gratulacje! Ukończyłeś poziom!" 
-               FontSize="24"
+        <Label Text="Congratulations! Level complete!" 
+               FontSize="23"
                FontAttributes="Bold"
                HorizontalOptions="Center"
                TextColor="Yellow" />

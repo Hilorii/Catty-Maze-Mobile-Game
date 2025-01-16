@@ -11,7 +11,7 @@
                          BackgroundColor="Transparent">
 
         <!-- Etykieta przegranej -->
-        <Label Text="Niestety, przegrałeś!"
+        <Label Text="Sorry, you lost!"
                FontSize="35"
                FontAttributes="Bold"
                HorizontalOptions="Center"
