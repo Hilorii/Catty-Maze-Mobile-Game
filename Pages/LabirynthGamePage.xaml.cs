@@ -3,6 +3,7 @@ using System.Diagnostics;
 using static MobileApp.Models.LabyrinthDrawable;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
+using CommunityToolkit.Maui.Views;
 
 namespace MobileApp.Pages
 {
@@ -44,6 +45,9 @@ namespace MobileApp.Pages
 
             bool isSoundEnabled = Preferences.Get(SoundPreferenceKey, true);
             Music.ShouldMute = !isSoundEnabled;
+            CoinSound.ShouldMute = !isSoundEnabled;
+            WinSound.ShouldMute = !isSoundEnabled;
+            LoseSound.ShouldMute = !isSoundEnabled;
         }
 
         public void SetLevel(int levelIndex)
@@ -122,6 +126,7 @@ namespace MobileApp.Pages
 
                 if (_drawable.CheckAndCollectCoin(targetX, targetY))
                 {
+                    PlaySound(CoinSound);
                     Debug.WriteLine($"Moneta zebrana na pozycji: X={targetX}, Y={targetY}");
                     UpdateCoinsRemaining();
                 }
@@ -133,6 +138,7 @@ namespace MobileApp.Pages
 
         private void ShowLevelCompletePage()
         {
+            PlaySound(WinSound);
             int currentLevelIndex = _drawable.CurrentLevelIndex;
 
             Navigation.PushModalAsync(new LevelCompletePage(
@@ -146,7 +152,7 @@ namespace MobileApp.Pages
                 },
                 onExitToMenu: async () =>
                 {
-                    Music.Handler?.DisconnectHandler();
+                    StopMusicAndSounds();
                     Application.Current.MainPage = new NavigationPage(new MainMenuPage());
                 },
                 currentLevelIndex: currentLevelIndex
@@ -155,6 +161,7 @@ namespace MobileApp.Pages
 
         private void ShowLevelFailedPage()
         {
+            PlaySound(LoseSound);
             Navigation.PushModalAsync(new LevelFailedPage(
                 onRetryLevel: () =>
                 {
@@ -166,7 +173,7 @@ namespace MobileApp.Pages
                 },
                 onExitToMenu: () =>
                 {
-                    Music.Handler?.DisconnectHandler();
+                    StopMusicAndSounds();
                     Application.Current.MainPage = new NavigationPage(new MainMenuPage());
                 }
             ));
@@ -190,9 +197,23 @@ namespace MobileApp.Pages
             }
         }
 
-        private void OnBackPressed(object sender, EventArgs e)
+        private void PlaySound(MediaElement soundElement)
+        {
+            soundElement.Stop();
+            soundElement.Play();
+        }
+
+        private void StopMusicAndSounds()
         {
             Music.Handler?.DisconnectHandler();
+            CoinSound.Handler?.DisconnectHandler();
+            WinSound.Handler?.DisconnectHandler();
+            LoseSound.Handler?.DisconnectHandler();
+        }
+
+        private void OnBackPressed(object sender, EventArgs e)
+        {
+            StopMusicAndSounds();
             //Navigation.PopAsync();
             Navigation.PopToRootAsync(); // ¿eby od razu wraca³o do strony g³ównej
         }

@@ -85,5 +85,22 @@
                               ShouldShowPlaybackControls="False"
                               ShouldAutoPlay="True"
                               ShouldLoopPlayback="True" />
+        
+        <!-- Dźwięki -->
+        <toolkit:MediaElement x:Name="CoinSound"
+                              Source="embed://coin.wav"
+                              WidthRequest="0"
+                              HeightRequest="0"
+                              ShouldShowPlaybackControls="False" />
+        <toolkit:MediaElement x:Name="WinSound"
+                              Source="embed://win.wav"
+                              WidthRequest="0"
+                              HeightRequest="0"
+                              ShouldShowPlaybackControls="False" />
+        <toolkit:MediaElement x:Name="LoseSound"
+                              Source="embed://lose.wav"
+                              WidthRequest="0"
+                              HeightRequest="0"
+                              ShouldShowPlaybackControls="False" />
     </AbsoluteLayout>
 </ContentPage>
